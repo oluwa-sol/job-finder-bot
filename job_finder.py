@@ -29,17 +29,43 @@ SEEN_FILE    = BOT_DIR / "seen_jobs.json"
 LATEST_FILE  = BOT_DIR / "jobs_latest.json"
 
 SEARCH_KEYWORDS = [
+    # Core profile titles
     "AI Automation Engineer",
     "LLM Engineer",
-    "AI Consultant",
+    "AI Automation Consultant",
     "Agentic Systems Engineer",
     "Workflow Automation Engineer",
-    "AI Automation Consultant",
     "AI Automation Specialist",
     "AI Automation Builder",
+    "AI Automation Expert",
+    "Lead AI Automation & Operations",
     "AI Engineer n8n",
     "LangChain Engineer",
     "AI Agent Developer",
+    # AI solutions / implementation angle
+    "AI Solutions Engineer",
+    "AI Integration Engineer",
+    "AI Implementation Specialist",
+    "AI Enablement Consultant",
+    "AI Tools Specialist",
+    "AI Platform Engineer",
+    "AI Workflow Specialist",
+    "Agentic AI Engineer",
+    # Business process / operations angle
+    "Business Process Automation",
+    "Intelligent Process Automation",
+    "Intelligent Automation Engineer",
+    "Hyperautomation Engineer",
+    "Digital Process Automation",
+    "Process Automation Consultant",
+    "Automation Architect",
+    # Low-code / no-code angle
+    "Low Code AI Developer",
+    "No Code Automation Developer",
+    "n8n Developer",
+    # Broader operational AI
+    "AI Operations Engineer",
+    "Conversational AI Engineer",
 ]
 
 PROFILE_SUMMARY = """
@@ -197,11 +223,14 @@ def fetch_arbeitnow() -> list[dict]:
                 continue
             if not j.get("remote", False):
                 continue
+            desc = clean_html(j.get("description", ""))
+            if not is_english(desc):
+                continue
             jobs.append({
                 "title": title,
                 "company": j.get("company_name", ""),
                 "url": j.get("url", ""),
-                "description": clean_html(j.get("description", "")),
+                "description": desc,
                 "location": "Remote",
                 "posted": j.get("created_at", ""),
                 "source": "Arbeitnow",
@@ -463,8 +492,59 @@ def fetch_linkedin() -> list[dict]:
         except Exception:
             pass
 
-    print(f"[LinkedIn] {len(jobs)} jobs found with descriptions")
-    return jobs
+    # Pre-filter: drop jobs whose description reveals hybrid or on-site work
+    confirmed_remote = []
+    for j in jobs:
+        desc = j.get("description", "").lower()
+        if not desc:
+            # No description fetched — keep and let scorer decide
+            confirmed_remote.append(j)
+            continue
+        if is_hybrid_or_onsite(desc):
+            print(f"  [DROP hybrid/onsite] {j['title']} at {j['company']}")
+            continue
+        confirmed_remote.append(j)
+
+    print(f"[LinkedIn] {len(confirmed_remote)} jobs after hybrid/onsite filter")
+    return confirmed_remote
+
+
+# ── Remote / language filters ─────────────────────────────────────────────────
+
+HYBRID_ONSITE_PATTERNS = [
+    r"\bhybrid\b", r"\bon[- ]?site\b", r"\bon[- ]?location\b",
+    r"\bin[- ]?office\b", r"\boffice days\b", r"\bdays? (per|a|in the) week (in|at) (the )?office\b",
+    r"\bwork from (our|the) office\b", r"\breport to (the )?(office|hq|headquarters)\b",
+    r"\bcommut", r"\bpresence required\b",
+]
+
+# City-name signals: "Location: [City, Country]" or "📍 City"
+CITY_LOCATION_PATTERN = re.compile(
+    r"(?:location\s*[:\-–]\s*|📍\s*)([A-Z][a-zA-Z\s]+,\s*[A-Z][a-zA-Z\s]+)"
+)
+
+GERMAN_MARKERS = [
+    "minijob", "homeoffice", "stunden", "bewerb", "arbeit", "gehalt",
+    "wir bieten", "aufgaben", "qualifikation", "umfragen", "telefonist",
+]
+
+def is_hybrid_or_onsite(description: str) -> bool:
+    desc = description.lower()
+    for pat in HYBRID_ONSITE_PATTERNS:
+        if re.search(pat, desc, re.IGNORECASE):
+            return True
+    # City-pattern check: "Location: Bucharest, Romania" → likely not remote
+    city_match = CITY_LOCATION_PATTERN.search(description)
+    if city_match:
+        return True
+    return False
+
+def is_english(description: str) -> bool:
+    if not description:
+        return True
+    desc = description.lower()
+    german_hits = sum(1 for m in GERMAN_MARKERS if m in desc)
+    return german_hits < 3
 
 
 # ── Relevance filter ──────────────────────────────────────────────────────────
@@ -474,10 +554,25 @@ RELEVANT_TERMS = [
     "openai", "claude", "gpt", "workflow", "machine learning", "ml",
     "artificial intelligence", "chatbot", "rag", "retrieval", "nlp",
     "generative", "prompt", "integration", "zapier", "make.com",
+    "intelligent process", "hyperautomation", "digital process", "low-code", "no-code",
+]
+
+# Job titles that pass the keyword check but are completely off-profile
+EXCLUDE_TITLE_TERMS = [
+    "civil engineer", "grid engineer", "mechanical engineer", "electrical engineer",
+    "structural engineer", "environmental engineer", "water engineer", "drainage",
+    "aml officer", "compliance officer", "chief aml",
+    "supply chain", "clinical", "logistics",
+    "telefonist", "interviewer", "umfragen", "homeoffice",  # German survey roles
+    "rpa developer",  # often on-prem, mainframe-heavy; filter unless clearly AI-adjacent
+    "work permit", "permit engineer",
+    "surgeon", "physician", "nurse", "doctor",
 ]
 
 def is_relevant(title: str) -> bool:
     t = title.lower()
+    if any(excl in t for excl in EXCLUDE_TITLE_TERMS):
+        return False
     return any(term in t for term in RELEVANT_TERMS)
 
 
@@ -772,11 +867,11 @@ def main():
         print(f"  [{j['score']}] {j['title']} at {j['company']} ({j['source']})")
 
     # Send email
-    high_quality = [j for j in scored if j["score"] >= 50]
+    high_quality = [j for j in scored if j["score"] >= 70]
     if high_quality:
         send_digest(high_quality)
     else:
-        print("[Email] No jobs scored above 50, skipping digest.")
+        print("[Email] No jobs scored 70+, skipping digest.")
 
     print(f"\nDone. {len(scored)} jobs scored, saved to jobs_latest.json")
 
