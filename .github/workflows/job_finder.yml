@@ -8,6 +8,7 @@ on:
 jobs:
   find-jobs:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     permissions:
       contents: write         # needed to commit seen_jobs.json back

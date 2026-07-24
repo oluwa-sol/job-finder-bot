@@ -437,11 +437,12 @@ def fetch_linkedin() -> list[dict]:
         except Exception as e:
             print(f"[LinkedIn] Error for '{keyword}': {e}")
             time.sleep(3)
-    # Fetch descriptions and external apply URLs for LinkedIn jobs
+    # Fetch descriptions and external apply URLs for LinkedIn jobs (cap at 30)
+    jobs = jobs[:30]
     print(f"[LinkedIn] Fetching descriptions for {len(jobs)} jobs...")
     for j in jobs:
         try:
-            r = requests.get(j["url"], headers=HEADERS, timeout=15)
+            r = requests.get(j["url"], headers=HEADERS, timeout=8)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
                 desc_el = soup.find("div", class_="description__text") or \
