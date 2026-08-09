@@ -1,101 +1,112 @@
 [
   {
-    "title": "Enterprise Generative AI Platform Engineer",
+    "title": "AI Implementation Specialist",
     "company": "",
-    "url": "https://himalayas.app/companies/lifelancer/jobs/enterprise-generative-ai-platform-engineer",
-    "description": "Job Title: Enterprise Generative AI Platform Engineer Job Location: Washington D.",
+    "url": "https://himalayas.app/companies/smb-team/jobs/ai-implementation-specialist-4300173484",
+    "description": "IMPORTANT NOTICE: SMB Team will never solicit personal information, request equipment purchases, or send checks as part of our hiring process.",
     "location": "Remote",
-    "posted": "Sun, 09 Aug 2026 04:54:31 GMT",
-    "source": "Himalayas",
-    "score": 78,
-    "reason": "Strong technical match on LLM orchestration, multi-agent systems, and API integration; however, enterprise platform engineering typically requires deeper backend infrastructure, scalability patterns, and team collaboration experience that aren't evident in independent consulting background."
-  },
-  {
-    "title": "Engenheiro(a) de Software AI-Native",
-    "company": "",
-    "url": "https://himalayas.app/companies/fcamara/jobs/engenheiro-a-de-software-ai-native",
-    "description": "A FCamara está em busca de uma pessoaEngenheiro(a) de Software AI-Native,para se juntar a nossa equipe dinâmica e atuar em parceria com a maior construtora da América Latina, que ao longo de sua existência, sempre esteve sintonizada com o mercado e as melhores práticas, além de priorizar sempre as necessidades de seus clientes.",
-    "location": "Remote",
-    "posted": "Sun, 09 Aug 2026 04:26:51 GMT",
+    "posted": "Sun, 09 Aug 2026 07:27:21 GMT",
     "source": "Himalayas",
     "score": 72,
-    "reason": "Strong technical alignment with AI automation and LLM orchestration skills, but role appears enterprise-focused requiring deeper software engineering fundamentals beyond Damilola's specialized AI automation stack. Portuguese language requirement and established company culture may require adjustment from independent builder experience."
+    "reason": "Strong technical alignment with AI/automation implementation and remote work, but job description lacks specifics on required skills, tech stack, and seniority level, making full assessment difficult. Role appears entry-to-mid level while candidate has specialized expertise in advanced multi-agent systems and LLM orchestration."
   },
   {
-    "title": "Senior Applied AI Engineer",
+    "title": "Director, AI Forward Deployed Engineer - Remote",
     "company": "",
-    "url": "https://himalayas.app/companies/veracity-insurance/jobs/senior-applied-ai-engineer",
-    "description": "At Veracity, we aim to be a different kind of insurance partner – one that is free from outside investors, venture capital, or the pressures of a corporate parent.",
+    "url": "https://himalayas.app/companies/lifelancer/jobs/director-ai-forward-deployed-engineer-remote",
+    "description": "Job Title: Director, AI Forward Deployed Engineer - Remote Job Location: Remote Job Location Type: Remote Job Contract Type: Full-time Job Seniority Level: Job ID REQ-10080348 Jun 22, 2026 USA Available in: English Summary This position can be based remotely anywhere in the U.",
     "location": "Remote",
-    "posted": "Sun, 09 Aug 2026 04:24:19 GMT",
-    "source": "Himalayas",
-    "score": 72,
-    "reason": "Strong technical alignment with AI/LLM orchestration and automation systems that insurance likely needs, but role requires 'Senior' level with unclear seniority expectations versus ~1 year independent experience. Remote-first company matches perfectly, though insurance domain experience is absent."
-  },
-  {
-    "title": "Platform and Automation Engineer - Remote",
-    "company": "",
-    "url": "https://himalayas.app/companies/zyte/jobs/platform-and-automation-engineer-remote-2033408599",
-    "description": "About UsAt Zyte, we eat data for breakfast, and you can eat your breakfast anywhere and work for Zyte.",
-    "location": "Remote",
-    "posted": "Sun, 09 Aug 2026 04:23:50 GMT",
+    "posted": "Sun, 09 Aug 2026 08:08:58 GMT",
     "source": "Himalayas",
     "score": 62,
-    "reason": "Strong automation and orchestration skills match core responsibilities, but lack of web scraping, data extraction, or infrastructure/DevOps experience limits fit for a data platform role. Remote compatibility and seniority are well-aligned."
+    "reason": "Strong technical skill alignment with AI/LLM expertise and proven automation delivery, but significant seniority gap—Director-level role requires established leadership track record while candidate has only 2.5 years independent experience with no management history. Remote compatibility is excellent."
   },
   {
-    "title": "GenAI Engineer",
-    "company": "硕软（上海）软件贸易有限公司",
-    "url": "https://www.linkedin.com/jobs/view/4449284350",
-    "description": "该职位来源于猎聘 Location: Wuxi Job Summary We are looking for a creative and technically proficient GenAI Engineer to design, develop, and implement generative AI solutions that address critical business challenges for Softwareone and our clients. You will work closely with cross-functional teams including data scientists, software engineers, product managers, and client stakeholders to build scalable, secure, and high-performance GenAI applications—ranging from large language model (LLM) fine-tuning to AI-powered workflow automation. This role requires a strong foundation in machine learning, hands-on experience with GenAI frameworks and tools, and a passion for translating cutting-edge AI capabilities into practical business outcomes. Key ResponsibilitiesDesign, develop, and deploy generative AI models and applications (e.g., LLM-powered chatbots, content generation tools, code assistants, data summarization solutions) tailored to enterprise use cases.Fine-tune and optimize open-source (e.g., Llama, Mistral, Falcon) and proprietary (e.g., GPT-4, Claude, Gemini) generative AI models to meet performance, accuracy, and cost requirements.Collaborate with data engineers to build and maintain data pipelines for training, validation, and inference of GenAI models, ensuring data quality, privacy, and compliance (e.g., GDPR, CCPA).Integrate GenAI solutions with existing enterprise systems, APIs, and cloud platforms (AWS, Azure, Google Cloud) to enable seamless workflow integration and scalability.Conduct technical research on emerging GenAI technologies, frameworks, and best practices, and evaluate their applicability to client projects and internal initiatives.Debug and troubleshoot GenAI models and applications, addressing issues related to performance, bias, hallucinations, and usability.Document technical designs, development processes, model architectures, and deployment procedures to ensure knowledge sharing and compliance.Work closely with client stakeholders to understand business requirements, translate them into technical specifications, and deliver GenAI solutions that drive measurable value.Mentor junior engineers and contribute to the growth of Softwareone’s GenAI capability and best practices. Required Qualifications & SkillsBachelor’s or Master’s degree in Computer Science, Electrical Engineering, Data Science, or a related technical field .4+ years of hands-on experience in machine learning, with a focus on generative AI (LLMs, diffusion models, or transformer-based architectures).Proficiency in programming languages: Python (expert level), with experience in ML libraries and frameworks (TensorFlow, PyTorch, Hugging Face Transformers, LangChain, LlamaIndex).Hands-on experience fine-tuning and deploying LLMs (e.g., GPT-4, Llama 2, Mistral) using tools like LoRA, QLoRA, or full fine-tuning techniques.Familiarity with cloud-based AI services (AWS Bedrock, Azure OpenAI Service, Google Vertex AI) and containerization tools (Docker, Kubernetes) for scalable deployment.Strong understanding of NLP concepts (tokenization, embeddings, attention mechanisms) and experience with NLP pipelines (text preprocessing, sentiment analysis, named entity recognition).Experience building and maintaining data pipelines for ML, with knowledge of SQL, NoSQL databases, and data processing tools (Spark, Pandas, NumPy).Knowledge of software engineering best practices: version control (Git), CI/CD pipelines, unit testing, and agile development methodologies.Awareness of AI ethics, bias mitigation, and responsible AI practices, including compliance with data privacy regulations.Excellent problem-solving skills, attention to detail, and the ability to work independently and in cross-functional teams.Strong communication skills, with the ability to explain technical concepts to non-technical stakeholders (clients and internal teams). Preferred QualificationsExperience developing GenAI solutions for enterprise clients in industries such as finance, healthcare, manufacturing, or retail.Knowledge of MLOps tools and practices (MLflow, Weights & Biases, Kubeflow) for model lifecycle management.Familiarity with low-code/no-code AI platforms and their integration with custom GenAI solutions.Publications or contributions to GenAI/ML communities (e.g., GitHub, Kaggle, conference papers) are a plus.Experience with multilingual GenAI models or domain-specific fine-tuning (e.g., legal, technical documentation).Be familiar with below technologies:  Database (SQL Server, vector DB)  Python/Django  GenAI Prompt  RAG (AI search experience is preferred)  Multi-agent (AutoGen is preferred)  Docker/AKS, ASE is preferred.  MS Azure Cloud  MS Azure DevOpsFluent English skill on both spoken and writing.Strong organizational, and project management skillsExcellent communication and interpersonal skillsKnowledge of technical architecture, software development, computer system verification and cybersecurityDocument generation and review experienceAbility to work under pressure and meet tight deadlinesStrong problem-solving and analytical skills Show more Show less",
-    "location": "Remote",
-    "posted": "2026-08-09T05:07:44.510906+00:00",
-    "source": "LinkedIn",
-    "score": 62,
-    "reason": "Strong match on GenAI fundamentals, LLM orchestration, and API integration, but significant gap in required ML/ML Ops depth (fine-tuning, PyTorch, Kubernetes, cloud ML services). Role demands 4+ years ML specialization; candidate's 1.5 years is in AI automation engineering, not core ML infrastructure."
-  },
-  {
-    "title": "Associate Director, Paid Social",
+    "title": "Booster AI Mentor",
     "company": "",
-    "url": "https://himalayas.app/companies/darkroom/jobs/associate-director-paid-social",
-    "description": "About DarkroomDarkroom is the leading next-generation growth marketing firm engineering the brands of tomorrow.",
+    "url": "https://himalayas.app/companies/teamcubation/jobs/booster-ai-mentor-2065062414",
+    "description": "En Teamcubation creemos que la tecnologia transforma empresas, pero tambien transforma personas.",
     "location": "Remote",
-    "posted": "Sun, 09 Aug 2026 04:36:26 GMT",
+    "posted": "Sun, 09 Aug 2026 07:48:21 GMT",
     "source": "Himalayas",
-    "score": 22,
-    "reason": "This is a paid social/marketing leadership role requiring advertising expertise and team management, not AI automation or engineering. Damilola's technical AI skills are largely irrelevant to managing paid social campaigns and marketing strategy."
+    "score": 42,
+    "reason": "Role is mentorship-focused with unclear technical requirements, misaligned with Damilola's hands-on AI engineering expertise. Limited information on deliverables, compensation, or growth trajectory in automation/LLM work."
   },
   {
-    "title": "Music Producer - AI Evaluation",
+    "title": "Software Engineer - Python - Container Images",
+    "company": "Canonical Ltd.",
+    "url": "https://jobicy.com/jobs/150364-software-engineer-python-container-images",
+    "description": "Canonical is a leading provider of open source software and operating systems to the global enterprise and technology markets. Our platform, Ubuntu, is very widely used in breakthrough enterprise initiatives such as public cloud, data science, AI, engineering innovation, and IoT. Our customers include the world's leading public cloud and silicon providers, and industry leaders in many sectors. The company is a pioneer of global distributed collaboration, with 1200+ colleagues in 75+ countries and very few office-based roles. Teams meet two to four times yearly in person, in interesting locations around the world, to align on strategy and execution. The company is founder-led, profitable, and growing. Canonical is building a new generation of Ubuntu-based container images to simplify open-source application deployment across the world. These container images will be free to use with long-term security commitments, and engineered for performance, security and usability. As with Ubuntu, we will work in the open and welcome community participation. In this role, you’ll be building and maintaining an ever-growing portfolio of container images while working with multiple teams, both inside and outside Canonical, to ensure these are of the highest quality and offer a seamless Ubuntu user experience. You will also be highly involved in the implementation and maintenance of the Continuous Integration and Continuous Delivery automation around these container images, for which you are expected to demonstrate deep insights into container-based DevOps. You will be contributing to fast-moving products like Rocks ( OCI images ) and thus have the chance to help steer and consolidate this growing team. You’ll gain experience with numerous container technologies and open source projects, where your feedback and contributions will be critical to driving widespread container adoption. As an engineer, your seniority will be based on your software development background and ability to lead junior team members. Come build a rewarding, meaningful career working with the best and brightest people in technology at Canonical. This is an exciting opportunity for experienced software engineers looking for a place to leave their mark, who are passionate about shaping an open source product with the highest quality, with and for the community! **Location**: EMEA This role entails Build robust, scalable, leading-edge container images Work on automated CI/CD processes for building, testing and publishing our container images Write tools and tests for assessing security compliance and cloud-native compatibility Participate in strong engineering process through code and architectural review Contribute, both as a user and developer, to the improvement of our Python- and Go-based container-building tools Provide technical feedback for the team’s decision-making process Engage with the open-source community as a subject-matter expert Grow our knowledge base and write documentation Work in a collaborative, agile and globally distributed environment Mentor and help hiring Work from home with global travel up to 15% for internal and external events What we are looking for in you You are knowledgeable and passionate about software development You are a team player and have experience in collaborative development You have worked with CI/CD systems (e.g. Jenkins, GitHub Actions, Concourse CI, etc.) You are familiar with GitOps principles and workflows You have a track record of delivering timely, high-quality software You have experience building container images You master at least one container management/orchestration tool (e.g. Docker, Kubernetes, etc.) You have experience with Python You are experienced with Linux systems administration and package management You have strong written and verbal communication skills to convey technical concepts You bring clarity to technical and engineering discussions You are someone who strongly believes that sharing is caring, and knowledge is power Your skills range from those of a Graduate to a mid-senior Software Engineer You have a Bachelor’s or equivalent in Computer Science, STEM or a similar degree What we offer colleagues We consider geographical location, experience, and performance in shaping compensation worldwide. We revisit compensation annually (and more often for graduates and associates) to ensure we recognize outstanding performance. In addition to base pay, we offer a performance-driven annual bonus or commission. We provide all team members with additional benefits which reflect our values and ideals. We balance our programs to meet local needs and ensure fairness globally. Distributed work environment with twice-yearly team sprints in person Personal learning and development budget of USD 2,000 per year Annual compensation review Recognition rewards Annual holiday leave Maternity and paternity leave Team Member Assistance Program &amp; Wellness Platform Opportunity to travel to new locations to meet colleagues Priority Pass and travel upgrades for long-haul company events About Canonical Canonical is a pioneering tech firm at the forefront of the global move to open source. As the company that publishes Ubuntu, one of the most important open-source projects and the platform for AI, IoT, and the cloud, we are changing the world of software. We recruit on a global basis and set a very high standard for people joining the company. We expect excellence; in order to succeed, we need to be the best at what we do. Most colleagues at Canonical have worked from home since our inception in 2004.​ Working here is a step into the future and will challenge you to think differently, work smarter, learn new skills, and raise your game. Canonical is an equal opportunity employer We are proud to foster a workplace free from discrimination. Diversity of experience, perspectives, and background create a better work environment and better products. Whatever your identity, we will give your application fair consideration. #LI-remote",
+    "location": "APAC,  EMEA,  LATAM,  Canada,  USA",
+    "posted": "2026-08-09T03:32:32+00:00",
+    "source": "Jobicy",
+    "score": 28,
+    "reason": "Damilola's expertise is in LLM orchestration, multi-agent systems, and automation workflows, which has minimal overlap with this role's core requirements of container image engineering, CI/CD infrastructure, and systems-level Python/Go development. The job demands deep DevOps and container technology experience that isn't evident in their portfolio of AI automation projects."
+  },
+  {
+    "title": "Senior Manager of AI Practice, Claude Corps",
     "company": "",
-    "url": "https://himalayas.app/companies/mercor/jobs/music-producer-ai-evaluation",
-    "description": "About the jobMercor connects elite creative and technical talent with leading AI research labs.",
+    "url": "https://himalayas.app/companies/codepath/jobs/senior-manager-of-ai-practice-claude-corps",
+    "description": "CodePath is the largest educator of college computer science students in the country.",
     "location": "Remote",
-    "posted": "Sun, 09 Aug 2026 04:51:09 GMT",
+    "posted": "Sun, 09 Aug 2026 08:00:03 GMT",
+    "source": "Himalayas",
+    "score": 28,
+    "reason": "Role requires management of educational programs and team leadership, not hands-on AI engineering. Candidate's expertise is in building automation systems, not managing practices or training college students at scale."
+  },
+  {
+    "title": "Identity Management Developer (SailPoint IdentityIQ) - Remote",
+    "company": "",
+    "url": "https://himalayas.app/companies/mutual-of-omaha/jobs/identity-management-developer-sailpoint-identityiq-remote",
+    "description": "Identity Management Developer (SailPoint IdentityIQ) - Remote Join the Identity Management Services team to help support and enhance identity governance solutions that protect the organization and enable secure user access.",
+    "location": "Remote",
+    "posted": "Sun, 09 Aug 2026 07:37:49 GMT",
+    "source": "Himalayas",
+    "score": 28,
+    "reason": "Damilola's expertise is in AI automation, LLM orchestration, and multi-agent systems with no demonstrated SailPoint IdentityIQ or identity governance experience. This role requires specialized IAM platform knowledge that doesn't align with their current skill stack."
+  },
+  {
+    "title": "Go (Golang) Software Engineer, Developer Tooling and Containers",
+    "company": "Canonical Ltd.",
+    "url": "https://jobicy.com/jobs/150365-go-golang-software-engineer-developer-tooling-and-containers",
+    "description": "Canonical is a leading provider of open source software and operating systems to the global enterprise and technology markets. Our platform, Ubuntu, is very widely used in breakthrough enterprise initiatives such as public cloud, data science, AI, engineering innovation, and IoT. Our customers include the world's leading public cloud and silicon providers, and industry leaders in many sectors. The company is a pioneer of global distributed collaboration, with 1200+ colleagues in 75+ countries and very few office-based roles. Teams meet two to four times yearly in person, in interesting locations around the world, to align on strategy and execution. The company is founder-led, profitable, and growing. We are hiring a Go (Golang) Software Engineer, Developer Tooling and Containers to work on a new open-source developer experience tool. We are rethinking typical developer workflows, trying to preserve what people love about traditional Linux while enabling people to work better in immutable distro environments, as well as with remote cloud resources. You'll join to work on a product that is deeply and securely integrated with Ubuntu desktop, modern IDEs, and SDKs from publishers like NVIDIA, Intel, AMD and others. Our ultimate goal is to free developers from the hours of tedious environment setup across multiple industry domains such as Robotics, MLOps, IoT. Come help us to make Ubuntu the greatest platform for software engineers! The role implies a deep interest in crafting tools for software engineers. It requires taste in experience design, and will benefit from experience with professional Linux based software development, Linux system-level fundamentals and containers. As a team, we value intellectual honesty in decision-making, peer reviews, and writing clear and maintainable code. While we are building a full team including senior, junior and entry-level roles, the senior roles require a strong understanding of containers and the kernel semantics and capabilities that underpin them. Location: This team is based in the APAC region, these remote roles can be filled from anywhere in APAC time zones. The role entails Design the user experience of new capabilities in the tool Write high-quality code to create new features Obsess with correctness and robustness of your work for diverse use cases Go the extra mile in making sure the software you create addresses a well-defined problem Think carefully through implementation strategy from the perspective of performance, quality and security Work with teams both inside and outside of Canonical What we are looking for in you You have professional software development experience using Go, Python, C, or C++ You know Linux system-level fundamentals, for example, cgroups and namespaces In addition: You are curious, thoughtful, articulate, and accountable Exceptional academic track record from both high school and university Undergraduate degree in a technical subject or a compelling narrative about your alternative chosen path Confidence to respectfully speak up, exchange feedback, and share ideas without hesitation Professional written and spoken English with excellent presentation skills Ability to travel internationally twice a year for company events up to two weeks long Nice-to-have skills Experience with LXC/LXD Experience with AI/ML and/or CUDA/OpenVINO Knowledge of system and language package managers internals What we offer colleagues We consider geographical location, experience, and performance in shaping compensation worldwide. We revisit compensation annually (and more often for graduates and associates) to ensure we recognize outstanding performance. In addition to base pay, we offer a performance-driven annual bonus or commission. We provide all team members with additional benefits which reflect our values and ideals. We balance our programs to meet local needs and ensure fairness globally. Distributed work environment with twice-yearly team sprints in person Personal learning and development budget of USD 2,000 per year Annual compensation review Recognition rewards Annual holiday leave Maternity and paternity leave Team Member Assistance Program &amp; Wellness Platform Opportunity to travel to new locations to meet colleagues Priority Pass and travel upgrades for long-haul company events About Canonical Canonical is a pioneering tech firm at the forefront of the global move to open source. As the company that publishes Ubuntu, one of the most important open-source projects and the platform for AI, IoT, and the cloud, we are changing the world of software. We recruit on a global basis and set a very high standard for people joining the company. We expect excellence; in order to succeed, we need to be the best at what we do. Most colleagues at Canonical have worked from home since our inception in 2004.​ Working here is a step into the future and will challenge you to think differently, work smarter, learn new skills, and raise your game. Canonical is an equal opportunity employer We are proud to foster a workplace free from discrimination. Diversity of experience, perspectives, and background create a better work environment and better products. Whatever your identity, we will give your application fair consideration. #LI-remote",
+    "location": "APAC",
+    "posted": "2026-08-09T03:32:34+00:00",
+    "source": "Jobicy",
+    "score": 15,
+    "reason": "Damilola's expertise is in AI/LLM automation and orchestration tools (n8n, Claude, GPT-4), not systems programming or Go development. This role requires deep Go proficiency, Linux kernel fundamentals (cgroups, namespaces), and containers—areas where Damilola has no demonstrated experience."
+  },
+  {
+    "title": "Record Your Daily Routine & Get Paid - AI Training",
+    "company": "",
+    "url": "https://himalayas.app/companies/toloka-ai/jobs/record-your-daily-routine-get-paid-ai-training-9749604369",
+    "description": "This is a project-based opportunity on an AI training platform — not a job.",
+    "location": "Remote",
+    "posted": "Sun, 09 Aug 2026 08:19:42 GMT",
     "source": "Himalayas",
     "score": 15,
-    "reason": "This role requires music production expertise and AI evaluation in audio/music domain, which is completely outside Damilola's core competencies in automation, LLM orchestration, and business process optimization. The technical skill sets are fundamentally misaligned despite both involving AI."
+    "reason": "This is a low-skilled data labeling gig that drastically underutilizes Damilola's advanced AI engineering expertise in multi-agent systems and LLM orchestration. Significant seniority mismatch and misalignment with his professional trajectory as an independent AI automation builder."
   },
   {
-    "title": "Customer Service Professionals: ServiceNow Workflow Screen Recording",
+    "title": "Record Your Daily Routine & Get Paid - AI Training",
     "company": "",
-    "url": "https://himalayas.app/companies/terac/jobs/customer-service-professionals-servicenow-workflow-screen-recording",
-    "description": "What We're ResearchingWe're running a paid study on the day-to-day software habits of customer support teams.",
+    "url": "https://himalayas.app/companies/toloka-ai/jobs/record-your-daily-routine-get-paid-ai-training-1872433613",
+    "description": "This is a project-based opportunity on an AI training platform — not a job.",
     "location": "Remote",
-    "posted": "Sun, 09 Aug 2026 04:33:27 GMT",
+    "posted": "Sun, 09 Aug 2026 07:56:58 GMT",
     "source": "Himalayas",
     "score": 15,
-    "reason": "This is a research study requiring ServiceNow workflow documentation, not an engineering role. Damilola's advanced AI automation and multi-agent systems expertise is vastly overqualified and misaligned with observational research work."
+    "reason": "This is data labeling/annotation work requiring no technical skills, completely misaligned with Damilola's advanced AI engineering expertise. Severe overqualification and underutilization of his multi-agent systems and LLM orchestration capabilities."
   },
   {
-    "title": "Chaplain (Part-Time) - Austin, TX",
+    "title": "Record Your Daily Routine & Get Paid - AI Training",
     "company": "",
-    "url": "https://himalayas.app/companies/marketplace-ministries-inc/jobs/chaplain-part-time-austin-tx",
-    "description": "It's fun to work in a company where people truly BELIEVE in what they're doing!",
+    "url": "https://himalayas.app/companies/toloka-ai/jobs/record-your-daily-routine-get-paid-ai-training-2543610215",
+    "description": "This is a project-based opportunity on an AI training platform — not a job.",
     "location": "Remote",
-    "posted": "Sun, 09 Aug 2026 04:28:52 GMT",
+    "posted": "Sun, 09 Aug 2026 07:37:49 GMT",
     "source": "Himalayas",
-    "score": 5,
-    "reason": "This is a chaplaincy role requiring religious/pastoral qualifications and spiritual counseling experience, which has zero alignment with Damilola's AI engineering and automation expertise. The role is fundamentally incompatible with his technical skill set and career trajectory."
+    "score": 15,
+    "reason": "This is a low-skill data labeling task with no technical match to Damilola's advanced AI engineering expertise. Significant overqualification and misalignment with his multi-agent system design and LLM orchestration capabilities."
   }
 ]
