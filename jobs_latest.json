@@ -1,255 +1,189 @@
 [
   {
-    "title": "AI Workflow Architect",
+    "title": "Full Stack AI Engineer",
     "company": "",
-    "url": "https://himalayas.app/companies/rise-group-investments/jobs/ai-workflow-architect",
-    "description": "🚀 High-Performance Job Post (AI Workflow Architect) Title: AI Workflow Architect (Automation + Systems Builder) Location: Remote (U.",
+    "url": "https://himalayas.app/companies/aimi-technologies-ab/jobs/full-stack-ai-engineer-4732134551",
+    "description": "Join AiMi and build the future of Capital Markets Infrastructure At AiMi, we are revolutionising the management of critical trading and market data infrastructure through AI-driven automation.",
     "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 03:18:03 GMT",
-    "source": "Himalayas",
-    "score": 88,
-    "reason": "Exceptional technical alignment across multi-agent systems, LLM orchestration, and automation tools (n8n, Make, APIs). Role perfectly matches proven track record of shipping complex workflow automation projects with proven business impact."
-  },
-  {
-    "title": "AI AUTOMATION ENGINEER",
-    "company": "Wealify",
-    "url": "https://www.linkedin.com/jobs/view/4451601766",
-    "description": "I - Mô tả vị trí:Quản lý một Hệ thống AI Agent theo phòng ban của cả công ty (Finance, HR, Compliance, BD, Growth, OTC, Product…), mỗi agent một repo Git riêng.Khoảng 95 job chạy 24/7 trên hub Mac mini: đối soát dòng tiền, soi rủi ro hợp đồng, báo cáo KPI, onboarding nhân sự, cổng duyệt Lark.Khoảng 80 skill (khoảng 11.000 dòng) hiện phân phối thủ công giữa các repo, xây cơ chế đồng bộ chuẩn là một trong những việc đầu tiên của bạn.Tích hợp sẵn: Lark / Larkbase, Linear, RAG nội bộ, API đối tác thanh toán quốc tế.Codebase khoảng 39.000 dòng Python và gần như chưa có test. Thời gian đầu chủ yếu là đọc, sửa, làm chắc lại code có sẵn, không phải viết mới.CEO cùng hệ agent điều phối chốt spec trước, nên bạn không mất thời gian thuyết phục ai nên làm gì. Đổi lại, thiết kế luồng, code, test, đưa lên chạy là của bạn, không ai duyệt từng bước.Được phản biện, dẫn dắt spec. (Luôn gửi kèm phương án thay thế)Báo cáo bằng bằng chứng, \"đã xong\" phải kèm commit / log / số liệu. Áp dụng cho tất cả, kể cả CEO.Spec-Driven, Async-first, cực ít họp, tập trung đo bằng kết quả. Trách nhiệm chínhBuild luồng theo spec: Python và shell, nối Lark/Larkbase, database, API nội bộ và đối tác, đưa vào chạy theo lịch. Chiếm 55%.Vận hành và xử lý sự cố: job chết, API đổi, dữ liệu lệch, chi phí token bất thường. Sửa trước khi người dùng nội bộ phát hiện. Chiếm 25%.Eval và guardrail: dựng bộ test và cách chấm để biết khi nào đủ tin cậy bật production. Không bật theo cảm tính. Chiếm 10%.Tích hợp và RAG: trợ lý hỏi đáp / trích xuất trên tài liệu nội bộ, tự kiểm được đúng sai. Chiếm 10%.Không thuộc vị trí này: quyết định tự động hoá cái gì (CEO); kiến trúc nền và lựa chọn công nghệ (CTO); code sản phẩm cho khách hàng (Squad Product); quản lý người.Trực hệ: hệ chạy 24/7 nhưng không có on-call chính thức, sự cố ngoài giờ xử lý ngày làm việc kế tiếp, trừ nhóm job chạm dòng tiền có cơ chế bù riêng, thống nhất khi ký hợp đồng.II - Yêu cầuBắt buộc:Đã tự tay build và vận hành ít nhất 1 hệ automation chạy thật trong một tổ chức, không phải demo. Tách được rõ phần bạn tự làm.Đọc, sửa, refactor codebase Python có sẵn không làm vỡ luồng đang chạy.Shell/Bash, Git và lịch chạy tự động (thực tế là launchd trên macOS).Tích hợp REST API/webhook: đọc tài liệu API lạ, xử lý auth/scope/rate-limit, đọc đúng mã lỗi vendor.Idempotency: file trạng thái, chống chạy chồng, chạy lại không mất không trùng.Debug job chết im lặng: báo thành công nhưng làm sai; viết được test mock/dry-run cho luồng bên thứ ba.Tool-use, structured output, và viết được chỉ dẫn cho agent chạy tự động không ai giám sát.Tự chủ end-to-end; viết tài liệu vận hành (tiếng Việt) để người khác tiếp quản được.Điểm cộng am hiểu/ có kinh nghiệm với:AI agent / multi-agent.RAG end-to-end và cách đo chất lượng.MCP server mức production.Thành thạo Claude Code / Cursor.LLMOps và observability.SQL / database.Fintech / Payment / Crypto.Tiếng Anh kỹ thuật.2.5. Chân dung ứng viên lý tưởngThích quy mô vận hành thật: khoảng 95 job chạm dữ liệu khách hàng và dòng tiền, mức mà phần lớn vị trí \"AI Engineer\" trên thị trường chỉ được nghe kể lại.Hệ chạy hơn một năm nên có \"nợ kỹ thuật\" thật. Thích tìm tòi, \"tò mò\", yêu thích kỹ thuậtMuốn sở hữu trọn một mảng thay vì làm một lát cắt nhỏ trong dự án lớn.Sẽ không hợp nếu bạn chủ yếu vẽ kiến trúc trên giấy, hoặc đang tìm vai trò Lead / Architect ngay bây giờ.Lộ trình kỹ thuật: khi mảng vận hành ổn định, phát triển chuyên sâu lên Senior/Tech Lead (band B4), hoặc chuyển sang nhúng AI vào sản phẩm Wealify.III - Quyền lợiThu nhập: Lương + cộng thưởng dự ánReview 6 tháng/ lần, mức lương có thể được thảo luận dựa trên hiệu suấtThưởng team xuất sắc, thưởng cá nhân xuất sắcĐược cấp quyền dùng hệ sinh thái AI cao cấp nhất của công ty (Claude Max và các công cụ agent trả phí), dùng hằng ngày, không giới hạn kiểu xin từng lần, được đầu tư công nghệ. Tài trợ khoá học / chứng chỉ.Chăm sóc sức khỏe, đời sống tinh thầnĐược hưởng chế độ BHXH, BHYT, BHTN, đi làm 7.5 tiếng mỗi ngày, nghỉ phép và các phúc lợi khác theo Luật lao độngQuà sinh nhật cho nhân viên, quà/ thưởng các ngày Lễ Tết, tháng lương thứ 13Mừng kết hôn, thăm hỏi ốm đau,...theo quy định của công ty.Được hỗ trợ thiết bị làm việcQuỹ công đoàn ăn chơi, team building, du lịch cùng Công ty,…Văn hoáĐược làm việc trong môi trường thân thiện và chuyên nghiệpĐược học tập và phát triển bản thân không giới hạn tùy theo mong muốn của bản thânChú trọng đến hiệu quả công việc thay vì quá trìnhCơ hội học hỏi & phát triểnTài trợ các khóa học, lấy chứng chỉ, nâng cao kỹ năng chuyên mônTổ chức các buổi đào tạo định kỳ, chia sẻ và giao lưu kiến thứcIV - Quy trình tuyển dụngVòng 1: Sàng lọc hồ sơ và portfolio.Vòng 2: Phỏng vấn kỹ thuật 60 phút, bóc tách hệ bạn đã build: kiến trúc, chỗ từng sai, cách phát hiện và sửa.Vòng 3: Bài thực hành có trả phí, 3 đến 4 giờ tại nhà, đề dùng API công khai, không phải việc nội bộ; sản phẩm bài test không đưa vào production. Minh bạc, không lo bị lợi dụng chất xám.Vòng 4: Trao đổi 45 phút với CEO về cách phối hợp, tinh thần và kỳ vọng.Chúng tôi trao đổi trên cái bạn làm ra, không chấm cách bạn kể về nó. V - Thông tin khác:Địa chỉ email gửi CV: tuyendung@thehumaninc.comGửi CV cộng mô tả 1 hệ automation bạn đã build: bài toán, kiến trúc, cách đo chất lượng, kết quả thực tế, và quan trọng nhất, phần nào bạn tự tay làm so với phần dùng tool/đồng đội. Hồ sơ không tách được phần này sẽ không được ưu tiên.Địa điểm làm việc: Tầng 3, Tháp G2, Tòa nhà Five Star, số 2 Kim Giang, phường Khương Đình, thành phố Hà Nội.Địa chỉ email gửi CV: tuyendung@thehumaninc.comWebsite: https://thehumaninc.com/Panpage: https://www.facebook.com/thehumaninc(*) Lưu ý: do hạn chế về mặt thời gian nên chỉ các ứng viên được lựa chọn vào vòng sau mới được liên hệ và phản hồi. Rất mong các bạn thông cảm. Show more Show less",
-    "location": "Remote",
-    "posted": "2026-08-11T05:09:01.669254+00:00",
-    "source": "LinkedIn",
-    "score": 82,
-    "reason": "Damilola has strong multi-agent systems, LLM orchestration, and automation pipeline experience with proven production deployments matching 55% of core responsibilities. Gaps in Python codebase refactoring depth, shell/bash proficiency, and fintech domain experience prevent a higher score, though async-first mindset and client delivery track record align well with company culture."
-  },
-  {
-    "title": "Lead Engineer, AI Internal Systems",
-    "company": "",
-    "url": "https://himalayas.app/companies/bjak/jobs/lead-engineer-ai-internal-systems-3042751517",
-    "description": "About A1There are over 5 billion users using basic applications today such email, notes, tasks, and a list of applications that are not AI-native to organise their lives.",
-    "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 03:01:09 GMT",
-    "source": "Himalayas",
-    "score": 78,
-    "reason": "Excellent technical skill match in LLM orchestration, multi-agent systems, and automation tooling directly applicable to AI-native internal systems development. Some gap in traditional software engineering depth and seniority expectations for a Lead role, though proven shipping ability and client coaching demonstrate capability."
-  },
-  {
-    "title": "Lead Engineer, AI Internal Systems",
-    "company": "",
-    "url": "https://himalayas.app/companies/bjak/jobs/lead-engineer-ai-internal-systems",
-    "description": "About A1There are over 5 billion users using basic applications today such email, notes, tasks, and a list of applications that are not AI-native to organise their lives.",
-    "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 02:52:21 GMT",
-    "source": "Himalayas",
-    "score": 78,
-    "reason": "Strong technical alignment with AI systems, automation, and multi-agent orchestration matching core competencies. Slight gap: role emphasizes internal systems/infrastructure while candidate's experience is primarily client-facing external solutions, and seniority level unclear from job description."
-  },
-  {
-    "title": "Agentic Technical Lead (Remote, Any Location, ES)",
-    "company": "",
-    "url": "https://himalayas.app/companies/foundever/jobs/agentic-technical-lead-remote-any-location-es-2866928984",
-    "description": "About Us Foundever™ is a global leader in the customer experience (CX) industry.",
-    "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 03:51:09 GMT",
+    "posted": "Tue, 11 Aug 2026 08:36:22 GMT",
     "source": "Himalayas",
     "score": 72,
-    "reason": "Strong technical alignment with agentic systems, LLM orchestration, and multi-agent design that directly matches the role requirements. Concern: limited formal leadership experience and no demonstrated track record managing technical teams, which is critical for a 'Technical Lead' position despite excellent hands-on engineering capabilities."
+    "reason": "Strong technical foundation in AI systems, LLM orchestration, and automation aligns well with full-stack AI role. However, limited demonstrated experience with capital markets domain, trading systems, or financial infrastructure creates a moderate gap despite excellent automation tooling expertise."
   },
   {
-    "title": "Backend Engineer, AI Internal Systems",
+    "title": "AI Workflow Evaluator - Fully Remote | Upto $190/hr",
     "company": "",
-    "url": "https://himalayas.app/companies/bjak/jobs/backend-engineer-ai-internal-systems",
-    "description": "About A1There are over 5 billion users using basic applications today such email, notes, tasks, and a list of applications that are not AI-native to organise their lives.",
+    "url": "https://himalayas.app/companies/mercor/jobs/ai-workflow-evaluator-fully-remote-upto-190-hr",
+    "description": "About the jobMercor connects elite creative and technical talent with leading AI research labs.",
     "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 03:30:24 GMT",
+    "posted": "Tue, 11 Aug 2026 07:02:14 GMT",
     "source": "Himalayas",
     "score": 72,
-    "reason": "Strong match on AI systems and automation expertise, but role requires traditional backend engineering (likely REST APIs, databases, system design) where Damilola's experience is primarily in agentic AI workflows and no-code/low-code platforms. Seniority and remote fit are good, but technical stack alignment is moderate."
+    "reason": "Strong technical alignment with AI systems and workflow evaluation experience, but role appears to be evaluation/QA-focused rather than building, which underutilizes Damilola's core strength in system design and implementation. Excellent remote fit and rate compatibility, though seniority level unclear from job description."
   },
   {
-    "title": "Full Stack Engineer, AI Internal Systems",
-    "company": "",
-    "url": "https://himalayas.app/companies/bjak/jobs/full-stack-engineer-ai-internal-systems-5387002788",
-    "description": "About A1There are over 5 billion users using basic applications today such email, notes, tasks, and a list of applications that are not AI-native to organise their lives.",
+    "title": "Software Engineer(AI & Data Analytics Automation）",
+    "company": "ThunderSoft",
+    "url": "https://www.linkedin.com/jobs/view/4439132691",
+    "description": "Job OverviewWe are looking for an experienced hands-on Software Engineer to build automation, data analytics, and AI-assisted productivity solutions for Semiconductor Test Development workflowsKey ResponsibilitiesBuild Python-based scripts, automation tools, lightweight applications, dashboards, and data workflows for semiconductor test development use cases.Design and perform testing/validation of developed tools, automation workflows, dashboards, and AI-assisted outputs to ensure reliability, accuracy, and maintainability.Analyze engineering data, logs, test results, and workflow metrics to identify trends, anomalies, bottlenecks, and actionable insights.Prototype AI-assisted tools, LLM-based applications, RAG/knowledge assistants, automation agents, or productivity solutions for engineering teams.Work with engineers and stakeholders to understand open-ended problems, clarify requirements, iterate on prototypes, and document solutions for reuse.RequirementsBachelor’s degree or equivalent experience in Electrical Engineering, Electronics Engineering, Computer Engineering, Computer Science, or a related technical field.Strong programming skills, preferably in Python, with experience in scripting, automation, data processing, and practical tool development; C++ is a plus.Experience with software testing and validation practices, including unit testing, integration testing, regression testing, and black-box/white-box testing as applicable.Practical working knowledge of AI tools and concepts, including prompt engineering, LLM-based workflows, AI-assisted automation, AI agents, and retrieval-augmented generation systems.Solid understanding of digital electronics fundamentals such as logic design, timing concepts, registers, buses, and basic hardware/software interaction.Interest in data analytics, including the ability to explore datasets, identify patterns, and convert raw data into useful engineering insights.Good communication, curiosity, ownership, and ability to work independently on ambiguous engineering problems.PreferredExperience building AI-assisted tools, LLM-based applications, RAG/knowledge assistants, automation agents, chatbots, or data-driven productivity solutions.Experience with dashboards or analytics tools such as Power BI, Streamlit, Plotly, Dash, SQL, APIs, or data pipelines.Exposure to semiconductor test, silicon validation, FPGA/ASIC workflows, ATE, bench validation, scan, MBIST, functional test, or hardware debug concepts is a plus.Exposure to C, Verilog, VHDL, SystemVerilog, simulation outputs, or test pattern concepts is a plus. Show more Show less",
     "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 02:44:44 GMT",
-    "source": "Himalayas",
-    "score": 72,
-    "reason": "Strong AI/LLM technical skills and automation expertise align well with AI systems work, but lack of full-stack web development depth (frontend frameworks, system design at scale) and no demonstrated experience building consumer-facing products create gaps for this role."
-  },
-  {
-    "title": "AI Engineer (LLM, RAG & AGENTIC AI)",
-    "company": "KiotViet",
-    "url": "https://www.linkedin.com/jobs/view/4451609303",
-    "description": "About KiotViet:KiotViet wishes to transfer a massive power of technology to every business model in Vietnam and Southeast Asia through our simple and effective solutions. KiotViet is committed to creating efficient, convenient products for micro, small and medium-size businesses. Over 15 years, with more than 1500 people who form KiotViet in present, we understand that our members of all time are the foundation of KiotViet nowadays and a launchpad for reaching a better KiotViet in the future. KiotViet is committed to creating a work environment that shares success, shares responsibilities.We are looking for some developers to join our product team. Joining us, you will have a chance to build the first marketplace in Vietnam with so many technology challenges. As a developer, you will join a growing Data & AI team with mature collaboration across Data Engineering, Data Science, Product, and Engineering functions to build products to enable an excellent experienceWhat you will do:1. Build & ship production AI systems- Architect, fine-tune, and deploy machine learning / deep learning/ LLMs models for real business use cases — owning the full lifecycle from prototype to production;- Set quality bars for stability, latency, accuracy, and scalability under VN merchant traffic patterns;- Define rollback / canary strategies; ensure graceful degradation when models fail.2. LLM & Agentic AI workflows- Design and build multi-agent systems using LLM orchestration frameworks (LangGraph, LangChain, or equivalent);- Implement RAG pipelines, knowledge bases, tool use, and memory for agents that operate across merchant workflows;- Lead prompt engineering, evaluation frameworks, and continuous improvement loops (Langfuse / custom eval pipelines);- Build conversational AI (chatbots, voice assistants, sales assistants) that natively understand the Vietnamese commerce context.3. Computer Vision & Document AI- Develop and productionize models for OCR, image-to-order parsing, receipt understanding, and product image generation/scanning;- Tune detection / OCR pipelines for low-quality mobile images typical of merchant uploads.4. NLP & information extraction- Build search, text classification, intent detection, and structured information extraction services.5. MLOps & LLMOps & production reliability- Build and maintain ML pipelines: data ingestion, feature stores, model registry, versioning, A/B testing;- Set up monitoring for model drift, hallucination rates, conversion impact, Prompt versioning, eval, cost, and latency. Drive cost optimization for inference (LLM API spend, GPU utilization).6. Cross-functional collaboration & leadership- Partner with Product Managers and Business Analysts to translate VN merchant pain points into AI solutions (not just features);- Work with Data Engineers on data pipelines, quality evaluation, and feature analysis;- Review code, mentor junior engineers, and contribute to AI engineering standards;- Evaluate emerging models, frameworks, and partnerships (open-source agent frameworks, foundation model providers) and recommend adoption.RequirementMust have:- 3-5 years of hands-on ML / AI engineering experience, with 2+ years shipping AI features to production at scale;- Strong Python and PyTorch/TensorFlow; comfortable with FastAPI, async patterns, and modern backend infrastructure;- Proven track record building LLM applications in production — RAG, agent orchestration, prompt engineering, eval — with at least one significant project shipped;- Experience with at least 2 of: Computer Vision, OCR / document AI, NLP, conversational AI;- Solid grasp of MLOps: model registry, monitoring, A/B testing, observability;- Ability to read papers, prototype quickly, and translate research into production code.Nice to have:- Experience with LangGraph, LangChain, or comparable agent frameworks;- Production experience with multi-agent systems or autonomous workflows (not just chatbots);- Experience with Langfuse, Weights & Biases, or similar for LLM observability and evaluation;- Domain knowledge in commerce, POS, retail, or F&B operations;- Experience optimizing inference cost (model quantization, prompt compression, caching strategies).Benefits:- Top salary range in the market (willing to negotiate);- Compensation, a 13th month salary depending on employee’s performance;- Performance bonus (up to 2-month salary);- Social – Health – Insurance paid fully. Healthcare: Annual health check-up, Premium Health Insurance (from level senior according to the company's regulations);- Advantageous and yield benefits, other benefits such as holiday vacations, benefits for employee’s relatives;- Unlimited chance of being promoted based on employee’s performance. Contacts:- Candidates mail to: Jobs@kiotviet.com with the title: Full name – Application position.- Location 3-6 floors, 1A Yet Kieu, Cua Nam, Hà Nội. Show more Show less",
-    "location": "Remote",
-    "posted": "2026-08-11T05:09:03.766626+00:00",
+    "posted": "2026-08-11T08:53:56.103456+00:00",
     "source": "LinkedIn",
     "score": 72,
-    "reason": "Strong technical match on LLM orchestration, RAG, and agentic AI (80%+ overlap), but role expects MLOps infrastructure, computer vision, and NLP breadth beyond Damilola's demonstrated portfolio. Independent builder profile fits remote but may lack production ML systems experience at scale."
+    "reason": "Strong match on AI/automation, Python, LLM applications, RAG, and agents with proven shipping experience. Significant gap: lacks semiconductor/hardware domain knowledge (digital electronics, test workflows, FPGA/ASIC) and formal CS education, which appear important for this specialized engineering role."
+  },
+  {
+    "title": "AI Safety Specialist - Fully Remote | Upto $84/hr",
+    "company": "",
+    "url": "https://himalayas.app/companies/mercor/jobs/ai-safety-specialist-fully-remote-upto-84-hr-2184181345",
+    "description": "About the jobMercor connects elite creative and technical talent with leading AI research labs.",
+    "location": "Remote",
+    "posted": "Tue, 11 Aug 2026 08:42:30 GMT",
+    "source": "Himalayas",
+    "score": 42,
+    "reason": "Damilola's expertise is in practical AI automation engineering and orchestration rather than AI safety research and theory. The role requires safety-focused research capabilities, while her background is primarily in building production systems and client implementation."
   },
   {
     "title": "AI Safety Specialist - Fully Remote | Upto $70/hr",
     "company": "",
-    "url": "https://himalayas.app/companies/mercor/jobs/ai-safety-specialist-fully-remote-upto-70-hr-6725638571",
+    "url": "https://himalayas.app/companies/mercor/jobs/ai-safety-specialist-fully-remote-upto-70-hr-3863188863",
     "description": "About the jobMercor connects elite creative and technical talent with leading AI research labs.",
     "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 04:49:39 GMT",
+    "posted": "Tue, 11 Aug 2026 08:37:35 GMT",
     "source": "Himalayas",
     "score": 42,
-    "reason": "Damilola's expertise in automation engineering and LLM orchestration doesn't align with AI Safety Specialist requirements, which typically demand formal ML research, safety testing, and alignment knowledge. The role appears to be research-focused rather than application-building focused."
+    "reason": "While Damilola has strong LLM and AI systems experience, the role requires specialized AI safety research expertise (alignment, interpretability, threat modeling) which isn't reflected in their automation engineering background. The position appears to be research-focused rather than engineering-focused, misaligning with their applied systems integration skill set."
   },
   {
-    "title": "AI Safety Specialist - Fully Remote | Upto $70/hr",
+    "title": "AI Safety Specialist - Fully Remote | Upto $84/hr",
     "company": "",
-    "url": "https://himalayas.app/companies/mercor/jobs/ai-safety-specialist-fully-remote-upto-70-hr-5180455656",
+    "url": "https://himalayas.app/companies/mercor/jobs/ai-safety-specialist-fully-remote-upto-84-hr-5937675899",
     "description": "About the jobMercor connects elite creative and technical talent with leading AI research labs.",
     "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 04:24:44 GMT",
+    "posted": "Tue, 11 Aug 2026 08:35:41 GMT",
     "source": "Himalayas",
     "score": 42,
-    "reason": "While Damilola has strong LLM and AI systems expertise, the role requires AI safety research specialization which isn't reflected in their automation-focused background. Their experience is primarily in production engineering and client delivery rather than safety research, alignment, or policy work that this role likely demands."
+    "reason": "Strong technical foundation in LLM systems and safety mechanisms (hallucination detection, validation), but lacks formal AI safety research experience, academic credentials in AI/ML, and the specialized theoretical knowledge required for a research-focused safety role at elite labs."
   },
   {
-    "title": "Product Owner, AI Internal Systems",
+    "title": "AI Safety Specialist - Fully Remote | Upto $84/hr",
     "company": "",
-    "url": "https://himalayas.app/companies/bjak/jobs/product-owner-ai-internal-systems-6240570561",
-    "description": "About A1There are over 5 billion users using basic applications today such email, notes, tasks, and a list of applications that are not AI-native to organise their lives.",
-    "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 03:50:07 GMT",
-    "source": "Himalayas",
-    "score": 42,
-    "reason": "Damilola's expertise is in AI automation engineering and multi-agent systems implementation, while this role requires product ownership and strategy skills. The technical foundation exists but the role demands business acumen, stakeholder management, and product vision rather than hands-on AI engineering."
-  },
-  {
-    "title": "AI Safety Specialist - Fully Remote | Upto $70/hr",
-    "company": "",
-    "url": "https://himalayas.app/companies/mercor/jobs/ai-safety-specialist-fully-remote-upto-70-hr-3677095526",
+    "url": "https://himalayas.app/companies/mercor/jobs/ai-safety-specialist-fully-remote-upto-84-hr-1137104783",
     "description": "About the jobMercor connects elite creative and technical talent with leading AI research labs.",
     "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 03:28:38 GMT",
+    "posted": "Tue, 11 Aug 2026 06:53:49 GMT",
     "source": "Himalayas",
     "score": 42,
-    "reason": "While Damilola has strong LLM and AI systems expertise, the role requires AI Safety research background which is absent from their profile. Their experience is in AI automation engineering, not safety research, alignment, or formal verification."
+    "reason": "While Damilola has strong technical AI skills in LLM orchestration and system design, AI Safety Specialist roles typically require research background, formal safety training, and theoretical expertise rather than applied automation engineering. The role appears misaligned with his practical builder focus and lack of demonstrated safety research experience."
   },
   {
-    "title": "STEM Domain Expert - Fully Remote | Upto $80/hr",
+    "title": "AI Safety Specialist - Fully Remote | Upto $25/hr",
     "company": "",
-    "url": "https://himalayas.app/companies/mercor/jobs/stem-domain-expert-fully-remote-upto-80-hr-5230886251",
+    "url": "https://himalayas.app/companies/mercor/jobs/ai-safety-specialist-fully-remote-upto-25-hr-8723355437",
     "description": "About the jobMercor connects elite creative and technical talent with leading AI research labs.",
     "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 03:27:52 GMT",
+    "posted": "Tue, 11 Aug 2026 08:37:38 GMT",
     "source": "Himalayas",
     "score": 32,
-    "reason": "Role requires STEM domain expertise and research lab work, misaligned with Damilola's AI automation engineering focus. Candidate's practical automation skills don't match the academic/research orientation of this position."
+    "reason": "While Damilola has strong AI/LLM technical skills, this is an AI Safety research role requiring specialized safety expertise (alignment, interpretability, red-teaming) which isn't reflected in his automation engineering background. The $25/hr rate significantly undervalues his demonstrated client work and shipped production systems."
   },
   {
-    "title": "STEM Domain Expert - Fully Remote | Upto $80/hr",
+    "title": "AI Safety Specialist - Fully Remote | Upto $25/hr",
     "company": "",
-    "url": "https://himalayas.app/companies/mercor/jobs/stem-domain-expert-fully-remote-upto-80-hr",
+    "url": "https://himalayas.app/companies/mercor/jobs/ai-safety-specialist-fully-remote-upto-25-hr-1440052645",
     "description": "About the jobMercor connects elite creative and technical talent with leading AI research labs.",
     "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 03:10:47 GMT",
+    "posted": "Tue, 11 Aug 2026 07:59:13 GMT",
     "source": "Himalayas",
     "score": 32,
-    "reason": "Role requires STEM domain expertise and research lab work, which misaligns with Damilola's AI automation engineering focus. Candidate's practical automation and LLM orchestration skills don't match the academic/research-oriented position."
+    "reason": "Role requires AI safety research expertise and formal background in safety/ML theory, while candidate excels in practical AI automation and system engineering. Significant skill mismatch despite remote compatibility, and $25/hr is substantially below market for candidate's demonstrated expertise level."
   },
   {
-    "title": "Health Insurance Agent - Fully Remote | Upto $140 Task based",
+    "title": "AI Adversarial Specialist - Fully Remote | Upto $22/hr",
     "company": "",
-    "url": "https://himalayas.app/companies/mercor/jobs/health-insurance-agent-fully-remote-upto-140-task-based",
+    "url": "https://himalayas.app/companies/mercor/jobs/ai-adversarial-specialist-fully-remote-upto-22-hr-3051999706",
     "description": "About the jobMercor connects elite creative and technical talent with leading AI research labs.",
     "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 03:35:02 GMT",
+    "posted": "Tue, 11 Aug 2026 07:28:52 GMT",
+    "source": "Himalayas",
+    "score": 32,
+    "reason": "Role requires adversarial testing/red-teaming expertise which isn't reflected in candidate's automation and system design background. Significant compensation mismatch ($22/hr is 60-70% below market for candidate's seniority and skill level) and role appears entry-level despite candidate's senior independent contracting experience."
+  },
+  {
+    "title": "Privacy Compliance Evaluator - Expert - AI Trainer",
+    "company": "",
+    "url": "https://himalayas.app/companies/mercor/jobs/privacy-compliance-evaluator-expert-ai-trainer",
+    "description": "About the jobMercor connects elite creative and technical talent with leading AI research labs.",
+    "location": "Remote",
+    "posted": "Tue, 11 Aug 2026 06:37:05 GMT",
     "source": "Himalayas",
     "score": 28,
-    "reason": "This is a sales/customer service role selling health insurance, not an AI engineering position. Damilola's advanced AI automation expertise and technical stack are vastly overqualified and misaligned with the job requirements."
+    "reason": "Role requires privacy compliance and AI safety expertise with no mention of automation engineering or LLM orchestration. Damilola's core strengths in multi-agent systems and automation are misaligned with evaluator/trainer compliance work."
   },
   {
-    "title": "Senior Geospatial Machine Learning Engineer",
+    "title": "AI Safety Specialist - Fully Remote | Upto $25/hr",
     "company": "",
-    "url": "https://himalayas.app/companies/clera/jobs/senior-geospatial-machine-learning-engineer-9378702253",
-    "description": "About the RoleJoin the Vegetation Modeling team at a mission-driven climate-tech company that uses AI and advanced satellite imagery to help utilities prevent wildfires and power outages by identifying vegetation risks before they become critical.",
+    "url": "https://himalayas.app/companies/mercor/jobs/ai-safety-specialist-fully-remote-upto-25-hr-3405301212",
+    "description": "About the jobMercor connects elite creative and technical talent with leading AI research labs.",
     "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 02:59:11 GMT",
+    "posted": "Tue, 11 Aug 2026 05:51:11 GMT",
     "source": "Himalayas",
     "score": 28,
-    "reason": "Damilola's expertise is in LLM orchestration, automation, and agentic systems with no demonstrated geospatial or machine learning model development experience. The role requires deep ML engineering for satellite imagery analysis, which is fundamentally misaligned with his automation-focused skill set."
+    "reason": "Role requires AI safety research expertise and academic background in ML safety, not automation engineering. Candidate's practical automation skills don't align with safety specialist requirements; significant career pivot needed."
   },
   {
-    "title": "Delivery Manager (AI Fluency)",
+    "title": "REMOTE Enterprise Architect - C#, ETL/Data Warehousing, Third-Party Integrations",
     "company": "",
-    "url": "https://himalayas.app/companies/koombea/jobs/delivery-manager-ai-fluency",
-    "description": "Remote, Latam | Full Time | 5+ years experience | English (B2+) The hiring process for this vacancy is for being part of our pipeline, and applying does not guarantee immediate placement.",
+    "url": "https://himalayas.app/companies/technology-navigators/jobs/remote-enterprise-architect-c-etl-data-warehousing-third-party-integrations-4000215107",
+    "description": "No sponsorship available. No third-party candidates.",
     "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 02:57:09 GMT",
+    "posted": "Tue, 11 Aug 2026 05:38:08 GMT",
     "source": "Himalayas",
     "score": 28,
-    "reason": "Damilola's expertise is in AI automation engineering with deep technical skills, but this role requires delivery management experience (5+ years) which isn't evident in their profile. The seniority mismatch and non-technical management focus create poor role fit despite remote compatibility."
+    "reason": "Damilola's expertise is in AI automation and LLM orchestration with Python/Node.js, while the role requires C# and traditional ETL/data warehousing which are outside their core skillset. The job explicitly excludes third-party candidates and requires no sponsorship, creating a likely ineligibility issue."
   },
   {
-    "title": "Call Agent",
+    "title": "Paid Media Strategist",
     "company": "",
-    "url": "https://himalayas.app/companies/sosi/jobs/call-agent-2865400786",
-    "description": "*** This position is contingent upon contract award *** The Call Agent position will during periods of FEMA surge disaster activity, need to respond to incoming calls and perform data entry for individuals and businesses in direct support of disaster activity.",
+    "url": "https://himalayas.app/companies/power-digital-marketing/jobs/paid-media-strategist-2781728027",
+    "description": "Who We Are:We are a tech-enabled growth firm–at the intersection of marketing, consulting & data intelligence–igniting revenue and brand recognition for leading and emerging companies around the world.",
     "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 03:48:05 GMT",
+    "posted": "Tue, 11 Aug 2026 08:41:17 GMT",
+    "source": "Himalayas",
+    "score": 18,
+    "reason": "Damilola's expertise is in AI automation, LLM orchestration, and backend systems—fundamentally misaligned with paid media strategy which requires marketing analytics, ad platform expertise (Google Ads, Meta, LinkedIn), and campaign optimization skills. This is a career pivot away from core competencies rather than an adjacent role."
+  },
+  {
+    "title": "Fundraising Operations Coordinator-Full Time Remote (Temp)",
+    "company": "",
+    "url": "https://himalayas.app/companies/contributor-development-partnership/jobs/fundraising-operations-coordinator-full-time-remote-temp",
+    "description": "Fundraising Operations Coordinator-Full Time Remote (Temporary Role) Our OrganizationCDP, a Boston-based public benefit corporation, uses the collaborative fundraising model to improve the operational efficiency and revenue generation capacity of the public media system.",
+    "location": "Remote",
+    "posted": "Tue, 11 Aug 2026 08:32:25 GMT",
     "source": "Himalayas",
     "score": 15,
-    "reason": "This is a basic customer service/data entry role with zero technical requirements, drastically underutilizing Damilola's advanced AI engineering, automation, and multi-agent system expertise. The contingent nature, manual call handling, and seniority mismatch make this unsuitable regardless of remote compatibility."
+    "reason": "Role requires fundraising operations and nonprofit management expertise with minimal technical requirements, fundamentally misaligned with Damilola's AI automation and engineering focus. Temporary nature and operations coordinator level represent significant step backward from independent AI engineering practice."
   },
   {
-    "title": "Country Manager - Thailand (Residential Energy Storage Systems) - Chinese Speake",
+    "title": "Paid Search/SEO & Paid Social Media Manager",
     "company": "",
-    "url": "https://himalayas.app/companies/matchatalent/jobs/country-manager-thailand-residential-energy-storage-systems-chinese-speake-2452051907",
-    "description": "This role requires the candidate to work in Thailand (Work From Anywhere) Client OverviewOur client is a globally established electrical manufacturing and clean energy technology company specializing in residential energy storage systems (ESS), smart electrical infrastructure, lithium battery solutions, intelligent power distribution products, and advanced energy management technologies.",
+    "url": "https://himalayas.app/companies/pharmaforceiq/jobs/paid-search-seo-paid-social-media-manager",
+    "description": "About Us:We are a team of marketing strategists, digital innovators, life science leaders, and other professionals who are driving growth, pushing the envelope, and going above and beyond on behalf of our clients every day.",
     "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 03:34:05 GMT",
+    "posted": "Tue, 11 Aug 2026 05:47:47 GMT",
     "source": "Himalayas",
     "score": 15,
-    "reason": "This role requires country management, sales, and Chinese language skills with zero alignment to Damilola's AI automation engineering expertise. The position is fundamentally mismatched—it's a business/operations role in energy manufacturing, not a technical engineering position."
+    "reason": "Damilola's expertise is in AI automation, LLM orchestration, and backend systems—not digital marketing, SEO, or paid social media management. This role requires marketing strategy skills that are fundamentally misaligned with his technical AI engineering background."
   },
   {
-    "title": "Part-time Virtual Trainer - Remote",
+    "title": "Patent Agent",
     "company": "",
-    "url": "https://himalayas.app/companies/allied-universal/jobs/part-time-virtual-trainer-remote",
-    "description": "OverviewCompany Overview:Deposita(TM), An Allied Universal(R) Company has perfected the art of cash management using world-class innovation, technology, and tailored solutions.",
+    "url": "https://himalayas.app/companies/mdb-capital-group/jobs/patent-agent",
+    "description": "US Patent AgentLocation:Remote — Central America (U.",
     "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 02:47:43 GMT",
+    "posted": "Tue, 11 Aug 2026 06:29:53 GMT",
     "source": "Himalayas",
-    "score": 15,
-    "reason": "Part-time Virtual Trainer role requires training delivery skills, not AI automation/engineering. Deposita's cash management focus has minimal alignment with Damilola's LLM orchestration, multi-agent systems, and automation expertise."
-  },
-  {
-    "title": "Remote Sales Leadership Trainee | Work From Home | Weekly Pay",
-    "company": "",
-    "url": "https://himalayas.app/companies/ail/jobs/remote-sales-leadership-trainee-work-from-home-weekly-pay",
-    "description": "Remote Sales Leadership Trainee | Work From Home | Leadership Development | Weekly PayCompany: AO | Globe Life Location: 100% Remote (United States) Schedule: Flexible | Leadership Development Program Launch Your Leadership CareerAre you ready to grow beyond an individual contributor role and develop into a successful leader?",
-    "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 02:41:17 GMT",
-    "source": "Himalayas",
-    "score": 15,
-    "reason": "This is a sales leadership training role with minimal technical requirements, directly misaligned with Damilola's specialized AI automation engineering expertise. The position would represent a significant downgrade from their current autonomous client work and skillset."
-  },
-  {
-    "title": "Certified Appraiser, Property Tax Appeals — Florida (Contract)",
-    "company": "",
-    "url": "https://himalayas.app/companies/jerry/jobs/certified-appraiser-property-tax-appeals-florida-contract",
-    "description": "Why We ExistYour car and your home are your most important assets, yet the experience of owning them is stuck in the 90s.",
-    "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 04:46:04 GMT",
-    "source": "Himalayas",
-    "score": 8,
-    "reason": "No technical alignment with AI automation, LLM orchestration, or software engineering. Role requires property appraisal certification and domain expertise completely outside candidate's skill set."
-  },
-  {
-    "title": "Insurance Coverage Attorney",
-    "company": "",
-    "url": "https://himalayas.app/companies/orion-placement/jobs/insurance-coverage-attorney-2765837511",
-    "description": "Pay: $100,000. 00 - $198,000. 00 per year Why This Is a Great Opportunity• Join a modern, collaborative litigation firm with a strong insurance coverage platform and a national client base • Handle sophisticated insurance coverage, reinsurance, regulatory, and coverage litigation matters • Work directly with clients and provide strategic coverage analysis, opinions, and recommendations • Manage meaningful matters from beginning to end while working with highly responsive partners, associates, and legal staff • Build your coverage practice in a supportive environment that values strong writing, judgment, client service, and professional growth • Work from a major NYC or Newark-area legal market with flexible work options depending on location, client needs, and practice group requirements • Be part of a forward-thinking firm focused on innovation, efficiency, diversity, sustainability, and work-life balance LocationThis is a remote role.",
-    "location": "Remote",
-    "posted": "Tue, 11 Aug 2026 02:49:45 GMT",
-    "source": "Himalayas",
-    "score": 5,
-    "reason": "This is a legal position requiring law degree and bar admission; Damilola's background is in AI/automation engineering with no legal qualifications. Complete role mismatch despite remote compatibility."
+    "score": 12,
+    "reason": "Patent Agent role requires legal expertise and USPTO credentials, which are completely unrelated to Damilola's AI automation and engineering background. This is a categorical mismatch regardless of technical capabilities."
   }
 ]
