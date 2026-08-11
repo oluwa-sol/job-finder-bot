@@ -246,7 +246,7 @@ def fetch_arbeitnow() -> list[dict]:
 def fetch_jobicy() -> list[dict]:
     jobs = []
     try:
-        r = requests.get("https://jobicy.com/api/v2/remote-jobs?count=50&tag=developer", timeout=15)
+        r = requests.get("https://jobicy.com/api/v2/remote-jobs?count=50&tag=ai%2Cautomation%2Cdeveloper", timeout=15)
         data = r.json()
         for j in data.get("jobs", []):
             title = j.get("jobTitle", "")
@@ -322,6 +322,7 @@ def fetch_workingnomads() -> list[dict]:
     feeds = [
         "https://www.workingnomads.com/feed?category=development",
         "https://www.workingnomads.com/feed?category=data",
+        "https://www.workingnomads.com/feed?category=ai",
     ]
     for feed_url in feeds:
         try:
@@ -435,6 +436,11 @@ def fetch_indeed() -> list[dict]:
         "AI+Agent+Developer",
         "Agentic+AI+Engineer",
         "n8n+automation",
+        "AI+Workflow+Automation",
+        "AI+Solutions+Engineer",
+        "Prompt+Engineer+AI",
+        "Make+Integromat+automation",
+        "AI+Implementation+Specialist",
     ]
     for q in queries:
         try:
@@ -466,9 +472,14 @@ def fetch_linkedin() -> list[dict]:
         "AI Automation Engineer",
         "LLM Engineer",
         "AI Agent Developer",
-        "Agentic AI",
+        "Agentic AI Engineer",
         "n8n automation",
         "AI Automation Consultant",
+        "AI Solutions Engineer",
+        "AI Workflow Automation",
+        "Make Zapier automation",
+        "Prompt Engineer",
+        "AI Implementation Specialist",
     ]
     for keyword in keywords_to_try:
         try:
@@ -593,31 +604,55 @@ def is_english(description: str) -> bool:
 
 # ── Relevance filter ──────────────────────────────────────────────────────────
 
-RELEVANT_TERMS = [
-    "ai", "llm", "automation", "agentic", "agent", "n8n", "langchain",
-    "openai", "claude", "gpt", "workflow", "machine learning", "ml",
-    "artificial intelligence", "chatbot", "rag", "retrieval", "nlp",
-    "generative", "prompt", "integration", "zapier", "make.com",
-    "intelligent process", "hyperautomation", "digital process", "low-code", "no-code",
+# Terms requiring exact word-boundary match (short/ambiguous substrings that cause false positives)
+RELEVANT_TERMS_WORD = [
+    "ai", "ml", "nlp", "rag", "llm", "gpt", "rpa",
+]
+# Terms safe for substring match
+RELEVANT_TERMS_SUBSTR = [
+    "automation", "agentic", "agent", "n8n", "langchain",
+    "openai", "claude", "workflow", "machine learning",
+    "artificial intelligence", "chatbot", "retrieval", "generative",
+    "prompt engineer", "integration specialist", "zapier", "make.com",
+    "intelligent process", "hyperautomation", "digital process",
+    "low-code", "no-code", "crewai", "autogen", "vapi",
+    "ai solutions", "ai platform", "ai workflow", "ai tool",
+    "ai engineer", "ai specialist", "ai consultant", "ai developer",
+    "ai trainer", "ai evaluator", "ai implementation",
 ]
 
 # Job titles that pass the keyword check but are completely off-profile
 EXCLUDE_TITLE_TERMS = [
+    # Engineering disciplines unrelated to AI
     "civil engineer", "grid engineer", "mechanical engineer", "electrical engineer",
     "structural engineer", "environmental engineer", "water engineer", "drainage",
-    "aml officer", "compliance officer", "chief aml",
-    "supply chain", "clinical", "logistics",
-    "telefonist", "interviewer", "umfragen", "homeoffice",  # German survey roles
-    "rpa developer",  # often on-prem, mainframe-heavy; filter unless clearly AI-adjacent
-    "work permit", "permit engineer",
+    "permit engineer", "work permit",
+    # Compliance / legal / finance
+    "aml officer", "compliance officer", "chief aml", "patent agent", "patent attorney",
+    # Operations / logistics
+    "supply chain", "clinical", "logistics", "fundraising", "coordinator",
+    # Marketing / media
+    "paid media", "paid search", "seo manager", "social media manager",
+    "media strategist", "media manager", "media buyer",
+    # Medical
     "surgeon", "physician", "nurse", "doctor",
+    # German survey / irrelevant roles
+    "telefonist", "interviewer", "umfragen", "homeoffice",
+    # AI-adjacent but consistently off-profile
+    "safety specialist", "adversarial specialist", "privacy compliance",
+    "rpa developer",  # often on-prem, mainframe-heavy
 ]
 
 def is_relevant(title: str) -> bool:
     t = title.lower()
     if any(excl in t for excl in EXCLUDE_TITLE_TERMS):
         return False
-    return any(term in t for term in RELEVANT_TERMS)
+    # Word-boundary check for short terms (prevents "ai" matching "paid", "ml" matching "html")
+    for term in RELEVANT_TERMS_WORD:
+        if re.search(rf"\b{re.escape(term)}\b", t):
+            return True
+    # Substring check is fine for longer, unambiguous terms
+    return any(term in t for term in RELEVANT_TERMS_SUBSTR)
 
 
 # ── Score with Claude ─────────────────────────────────────────────────────────
