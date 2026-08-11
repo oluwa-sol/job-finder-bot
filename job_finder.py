@@ -271,28 +271,47 @@ def fetch_jobicy() -> list[dict]:
 
 def fetch_himalayas() -> list[dict]:
     jobs = []
-    feeds = [
-        "https://himalayas.app/jobs/rss",
-    ]
-    for feed_url in feeds:
+    try:
+        feed = feedparser.parse("https://himalayas.app/jobs/rss")
+        for entry in feed.entries:
+            title = entry.get("title", "")
+            if not is_relevant(title):
+                continue
+            jobs.append({
+                "title": title,
+                "company": entry.get("author", ""),
+                "url": entry.get("link", ""),
+                "description": "",  # fetch full description below
+                "location": "Remote",
+                "posted": entry.get("published", ""),
+                "source": "Himalayas",
+            })
+    except Exception as e:
+        print(f"[Himalayas] RSS error: {e}")
+
+    # Fetch full descriptions (cap at 25 to control time)
+    jobs = jobs[:25]
+    print(f"[Himalayas] Fetching full descriptions for {len(jobs)} jobs...")
+    for j in jobs:
         try:
-            feed = feedparser.parse(feed_url)
-            for entry in feed.entries:
-                title = entry.get("title", "")
-                if not is_relevant(title):
-                    continue
-                jobs.append({
-                    "title": title,
-                    "company": entry.get("author", ""),
-                    "url": entry.get("link", ""),
-                    "description": clean_html(entry.get("summary", "")),
-                    "location": "Remote",
-                    "posted": entry.get("published", ""),
-                    "source": "Himalayas",
-                })
-        except Exception as e:
-            print(f"[Himalayas] Error: {e}")
-    print(f"[Himalayas] {len(jobs)} relevant jobs found")
+            r = requests.get(j["url"], headers=HEADERS, timeout=10)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "lxml")
+                desc_el = (
+                    soup.find("div", class_="job-description") or
+                    soup.find("div", {"class": lambda c: c and "description" in c.lower()}) or
+                    soup.find("section", {"class": lambda c: c and "description" in c.lower()}) or
+                    soup.find("main")
+                )
+                if desc_el:
+                    j["description"] = clean_html(desc_el.get_text())[:4000]
+            time.sleep(1)
+        except Exception:
+            pass
+
+    # Drop jobs where description couldn't be fetched (can't verify remote status)
+    jobs = [j for j in jobs if j["description"]]
+    print(f"[Himalayas] {len(jobs)} jobs with full descriptions")
     return jobs
 
 
@@ -378,6 +397,31 @@ def fetch_jobspresso() -> list[dict]:
     except Exception as e:
         print(f"[Jobspresso] Error: {e}")
     print(f"[Jobspresso] {len(jobs)} relevant jobs found")
+    return jobs
+
+
+# ── Source: AIJobs.net ───────────────────────────────────────────────────────
+
+def fetch_aijobs() -> list[dict]:
+    jobs = []
+    try:
+        feed = feedparser.parse("https://aijobs.net/feed/")
+        for entry in feed.entries:
+            title = entry.get("title", "")
+            if not is_relevant(title):
+                continue
+            jobs.append({
+                "title": title,
+                "company": entry.get("author", ""),
+                "url": entry.get("link", ""),
+                "description": clean_html(entry.get("summary", "")),
+                "location": "Remote",
+                "posted": entry.get("published", ""),
+                "source": "AIJobs",
+            })
+    except Exception as e:
+        print(f"[AIJobs] Error: {e}")
+    print(f"[AIJobs] {len(jobs)} relevant jobs found")
     return jobs
 
 
@@ -497,8 +541,8 @@ def fetch_linkedin() -> list[dict]:
     for j in jobs:
         desc = j.get("description", "").lower()
         if not desc:
-            # No description fetched — keep and let scorer decide
-            confirmed_remote.append(j)
+            # LinkedIn: no description fetched = can't verify remote, drop it
+            print(f"  [DROP no-description] {j['title']} at {j['company']}")
             continue
         if is_hybrid_or_onsite(desc):
             print(f"  [DROP hybrid/onsite] {j['title']} at {j['company']}")
@@ -815,7 +859,7 @@ def main():
     for fetcher in [
         fetch_remotive, fetch_wwr, fetch_remoteok, fetch_arbeitnow,
         fetch_jobicy, fetch_himalayas, fetch_workingnomads, fetch_remoteco,
-        fetch_jobspresso, fetch_indeed, fetch_linkedin,
+        fetch_jobspresso, fetch_aijobs, fetch_indeed, fetch_linkedin,
     ]:
         try:
             all_jobs += fetcher()
