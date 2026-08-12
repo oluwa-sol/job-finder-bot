@@ -226,6 +226,8 @@ def fetch_arbeitnow() -> list[dict]:
             desc = clean_html(j.get("description", ""))
             if not is_english(desc):
                 continue
+            if is_geo_restricted(desc):
+                continue
             jobs.append({
                 "title": title,
                 "company": j.get("company_name", ""),
@@ -309,10 +311,22 @@ def fetch_himalayas() -> list[dict]:
         except Exception:
             pass
 
-    # Drop jobs where description couldn't be fetched (can't verify remote status)
-    jobs = [j for j in jobs if j["description"]]
-    print(f"[Himalayas] {len(jobs)} jobs with full descriptions")
-    return jobs
+    # Filter: drop if no description, geo-restricted, or hybrid/onsite
+    clean = []
+    for j in jobs:
+        desc = j["description"]
+        if not desc:
+            print(f"  [DROP no-description] {j['title']}")
+            continue
+        if is_hybrid_or_onsite(desc):
+            print(f"  [DROP hybrid/onsite] {j['title']}")
+            continue
+        if is_geo_restricted(desc):
+            print(f"  [DROP geo-restricted] {j['title']}")
+            continue
+        clean.append(j)
+    print(f"[Himalayas] {len(clean)} jobs after remote/geo filter")
+    return clean
 
 
 # ── Source: Working Nomads ────────────────────────────────────────────────────
@@ -572,6 +586,28 @@ HYBRID_ONSITE_PATTERNS = [
     r"\bwork from (our|the) office\b", r"\breport to (the )?(office|hq|headquarters)\b",
     r"\bcommut", r"\bpresence required\b",
 ]
+
+# Geo-restriction signals: role is remote but only open to specific countries/regions
+GEO_RESTRICTION_PATTERNS = [
+    r"\bonly (open|available|accepting).{0,30}(us|uk|eu|canada|australia|india|latam|latin america|europe|asia)\b",
+    r"\bmust be (based|located|residing).{0,20}(us|uk|eu|canada|australia|india|latam|europe|asia)\b",
+    r"\bauthorized to work in\b",
+    r"\bwork authorization.{0,20}(us|uk|canada|australia)\b",
+    r"\b(us|uk) (citizens?|residents?|nationals?) only\b",
+    r"\beligible to work in the (us|uk|eu|canada|australia)\b",
+    r"\bapplicants? (must|should) (be|reside|live).{0,20}(us|uk|eu|canada|spain|uruguay|pakistan|india|latin america|latam)\b",
+    r"\bthis role is (open|available) (only |exclusively )?(to|for) (candidates? in|residents? of)\b",
+    r"\bno (visa )?sponsor(ship)?\b",
+    r"\bcandidates? based in\b",
+    r"\blocated in (the )?(us|usa|united states|uk|united kingdom|eu|europe|canada|australia|spain|uruguay|pakistan)\b",
+]
+
+def is_geo_restricted(text: str) -> bool:
+    t = text.lower()
+    for pat in GEO_RESTRICTION_PATTERNS:
+        if re.search(pat, t, re.IGNORECASE):
+            return True
+    return False
 
 # City-name signals: "Location: [City, Country]" or "📍 City"
 CITY_LOCATION_PATTERN = re.compile(
