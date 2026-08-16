@@ -51,6 +51,9 @@ SEARCH_KEYWORDS = [
     "AI Platform Engineer",
     "AI Workflow Specialist",
     "Agentic AI Engineer",
+    "AI Product Engineer",
+    "Generative AI Engineer",
+    "MCP Developer",
     # Business process / operations angle
     "Business Process Automation",
     "Intelligent Process Automation",
@@ -63,9 +66,13 @@ SEARCH_KEYWORDS = [
     "Low Code AI Developer",
     "No Code Automation Developer",
     "n8n Developer",
+    "GoHighLevel Automation",
+    "GoHighLevel Developer",
     # Broader operational AI
     "AI Operations Engineer",
     "Conversational AI Engineer",
+    "Prompt Engineer",
+    "AI Tooling Engineer",
 ]
 
 PROFILE_SUMMARY = """
@@ -247,24 +254,30 @@ def fetch_arbeitnow() -> list[dict]:
 
 def fetch_jobicy() -> list[dict]:
     jobs = []
-    try:
-        r = requests.get("https://jobicy.com/api/v2/remote-jobs?count=50&tag=ai%2Cautomation%2Cdeveloper", timeout=15)
-        data = r.json()
-        for j in data.get("jobs", []):
-            title = j.get("jobTitle", "")
-            if not is_relevant(title):
-                continue
-            jobs.append({
-                "title": title,
-                "company": j.get("companyName", ""),
-                "url": j.get("url", ""),
-                "description": clean_html(j.get("jobDescription", "")),
-                "location": j.get("jobGeo", "Remote") or "Remote",
-                "posted": j.get("pubDate", ""),
-                "source": "Jobicy",
-            })
-    except Exception as e:
-        print(f"[Jobicy] Error: {e}")
+    seen_urls: set = set()
+    tags = ["developer", "ai", "machine-learning", "backend"]
+    for tag in tags:
+        try:
+            r = requests.get(f"https://jobicy.com/api/v2/remote-jobs?count=50&tag={tag}", timeout=15)
+            data = r.json()
+            for j in data.get("jobs", []):
+                title = j.get("jobTitle", "")
+                url = j.get("url", "")
+                if not is_relevant(title) or url in seen_urls:
+                    continue
+                seen_urls.add(url)
+                jobs.append({
+                    "title": title,
+                    "company": j.get("companyName", ""),
+                    "url": url,
+                    "description": clean_html(j.get("jobDescription", "")),
+                    "location": j.get("jobGeo", "Remote") or "Remote",
+                    "posted": j.get("pubDate", ""),
+                    "source": "Jobicy",
+                })
+            time.sleep(1)
+        except Exception as e:
+            print(f"[Jobicy] Error for tag '{tag}': {e}")
     print(f"[Jobicy] {len(jobs)} relevant jobs found")
     return jobs
 
@@ -440,6 +453,37 @@ def fetch_aijobs() -> list[dict]:
     return jobs
 
 
+# ── Source: Wellfound ─────────────────────────────────────────────────────────
+
+def fetch_wellfound() -> list[dict]:
+    jobs = []
+    try:
+        r = requests.get(
+            "https://wellfound.com/jobs.json?remote=true&role=engineer",
+            headers=HEADERS,
+            timeout=15,
+        )
+        if r.status_code == 200:
+            data = r.json()
+            for j in (data if isinstance(data, list) else data.get("jobs", [])):
+                title = j.get("title", "") or j.get("role", "")
+                if not is_relevant(title):
+                    continue
+                jobs.append({
+                    "title": title,
+                    "company": j.get("startup", {}).get("name", "") if isinstance(j.get("startup"), dict) else j.get("company", ""),
+                    "url": j.get("url", "") or j.get("job_url", ""),
+                    "description": clean_html(j.get("description", "")),
+                    "location": "Remote",
+                    "posted": j.get("created_at", ""),
+                    "source": "Wellfound",
+                })
+    except Exception as e:
+        print(f"[Wellfound] Error: {e}")
+    print(f"[Wellfound] {len(jobs)} relevant jobs found")
+    return jobs
+
+
 # ── Source: Indeed RSS ────────────────────────────────────────────────────────
 
 def fetch_indeed() -> list[dict]:
@@ -494,6 +538,10 @@ def fetch_linkedin() -> list[dict]:
         "Make Zapier automation",
         "Prompt Engineer",
         "AI Implementation Specialist",
+        "AI Product Engineer",
+        "Generative AI Engineer",
+        "GoHighLevel Automation",
+        "AI Workflow Engineer",
     ]
     for keyword in keywords_to_try:
         try:
@@ -516,6 +564,8 @@ def fetch_linkedin() -> list[dict]:
                 if not title_el or not link_el:
                     continue
                 title = title_el.get_text(strip=True)
+                if not is_relevant(title):
+                    continue
                 company = company_el.get_text(strip=True) if company_el else ""
                 link = link_el.get("href", "")
                 # Normalize to canonical www.linkedin.com URL using just the numeric job ID
@@ -528,7 +578,7 @@ def fetch_linkedin() -> list[dict]:
                     "url": canonical,
                     "description": "",
                     "location": "Remote",
-                    "posted": datetime.now(timezone.utc).isoformat(),
+                    "posted": "",
                     "source": "LinkedIn",
                 })
             time.sleep(1.5)
@@ -655,6 +705,7 @@ RELEVANT_TERMS_SUBSTR = [
     "ai solutions", "ai platform", "ai workflow", "ai tool",
     "ai engineer", "ai specialist", "ai consultant", "ai developer",
     "ai trainer", "ai evaluator", "ai implementation",
+    "gohighlevel", "ghl", "mcp", "voice ai", "ai product",
 ]
 
 # Job titles that pass the keyword check but are completely off-profile
@@ -840,11 +891,15 @@ def parse_posted_date(date_str: str) -> datetime | None:
     return None
 
 def is_fresh(job: dict) -> bool:
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
+    # LinkedIn sets posted=now() at scrape time — not a real post date.
+    # LinkedIn already uses f_TPR=r86400 to request only last-24h listings,
+    # so all LinkedIn results from a live run are fresh. Trust the API filter.
+    if job.get("source") == "LinkedIn":
+        return True
     dt = parse_posted_date(job.get("posted", ""))
     if dt is None:
-        # LinkedIn jobs we set to now(), always fresh
         return True
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
     fresh = dt >= cutoff
     if not fresh:
         age_hours = (datetime.now(timezone.utc) - dt).total_seconds() / 3600
@@ -930,7 +985,8 @@ def main():
     for fetcher in [
         fetch_remotive, fetch_wwr, fetch_remoteok, fetch_arbeitnow,
         fetch_jobicy, fetch_himalayas, fetch_workingnomads, fetch_remoteco,
-        fetch_jobspresso, fetch_aijobs, fetch_indeed, fetch_linkedin,
+        fetch_jobspresso, fetch_aijobs, fetch_wellfound,
+        fetch_indeed, fetch_linkedin,
     ]:
         try:
             all_jobs += fetcher()
@@ -972,6 +1028,11 @@ def main():
 
     # Sort by score
     scored.sort(key=lambda x: x["score"], reverse=True)
+
+    # Stamp each job with the batch run time so reviewers can filter by age
+    batch_ts = datetime.now(timezone.utc).isoformat()
+    for j in scored:
+        j["scraped_at"] = batch_ts
 
     # Save results
     LATEST_FILE.write_text(json.dumps(scored, indent=2, ensure_ascii=False), encoding="utf-8")
