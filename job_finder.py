@@ -593,6 +593,49 @@ def fetch_linkedin() -> list[dict]:
             r = requests.get(j["url"], headers=HEADERS, timeout=8)
             if r.status_code == 200:
                 soup = BeautifulSoup(r.text, "lxml")
+
+                # Extract work arrangement from JSON-LD (most reliable signal)
+                # jobLocationType: "TELECOMMUTE" = remote, anything else = not remote
+                work_type_confirmed = None
+                for script in soup.find_all("script", type="application/ld+json"):
+                    try:
+                        data = json.loads(script.string or "")
+                        jlt = data.get("jobLocationType", "")
+                        if jlt:
+                            work_type_confirmed = jlt.upper()
+                            break
+                        # Some postings use applicantLocationRequirements instead
+                        alr = data.get("applicantLocationRequirements", "")
+                        if alr:
+                            work_type_confirmed = "TELECOMMUTE" if "remote" in str(alr).lower() else "ONSITE"
+                    except Exception:
+                        pass
+
+                # Fallback: check LinkedIn's criteria pills ("On-site", "Hybrid", "Remote")
+                if work_type_confirmed is None:
+                    for el in soup.find_all(class_=lambda c: c and "workplace-type" in c):
+                        text = el.get_text(strip=True).lower()
+                        if "remote" in text:
+                            work_type_confirmed = "TELECOMMUTE"
+                        elif "hybrid" in text or "on-site" in text or "onsite" in text:
+                            work_type_confirmed = "ONSITE"
+                        break
+                    # Also check criteria items which sometimes contain the work type
+                    if work_type_confirmed is None:
+                        for item in soup.find_all("li", class_=lambda c: c and "description__job-criteria-item" in c):
+                            header = item.find("h3")
+                            value = item.find("span", class_=lambda c: c and "description__job-criteria-text--criteria" in c)
+                            if header and value:
+                                h = header.get_text(strip=True).lower()
+                                v = value.get_text(strip=True).lower()
+                                if "workplace" in h or "work type" in h or "work arrangement" in h:
+                                    if "remote" in v:
+                                        work_type_confirmed = "TELECOMMUTE"
+                                    elif "hybrid" in v or "on-site" in v or "onsite" in v:
+                                        work_type_confirmed = "ONSITE"
+
+                j["_linkedin_work_type"] = work_type_confirmed or "UNKNOWN"
+
                 desc_el = soup.find("div", class_="description__text") or \
                           soup.find("div", {"class": lambda c: c and "description" in c}) or \
                           soup.find("div", class_="show-more-less-html__markup")
@@ -611,17 +654,33 @@ def fetch_linkedin() -> list[dict]:
         except Exception:
             pass
 
-    # Pre-filter: drop jobs whose description reveals hybrid or on-site work
+    # Pre-filter: drop jobs that are not confirmed remote
     confirmed_remote = []
     for j in jobs:
+        wt = j.get("_linkedin_work_type", "UNKNOWN")
         desc = j.get("description", "").lower()
+
+        # Drop if LinkedIn's own metadata says on-site or hybrid
+        if wt == "ONSITE":
+            print(f"  [DROP linkedin=onsite] {j['title']} at {j['company']}")
+            continue
+
+        # Drop if no description fetched (can't verify)
         if not desc:
-            # LinkedIn: no description fetched = can't verify remote, drop it
             print(f"  [DROP no-description] {j['title']} at {j['company']}")
             continue
+
+        # Drop if description text reveals hybrid/onsite regardless of metadata
         if is_hybrid_or_onsite(desc):
-            print(f"  [DROP hybrid/onsite] {j['title']} at {j['company']}")
+            print(f"  [DROP hybrid/onsite in desc] {j['title']} at {j['company']}")
             continue
+
+        # Keep if LinkedIn confirmed remote, or if UNKNOWN but description passes
+        if wt == "TELECOMMUTE":
+            print(f"  [KEEP linkedin=remote] {j['title']} at {j['company']}")
+        else:
+            print(f"  [KEEP unconfirmed, no disqualifiers] {j['title']} at {j['company']}")
+
         confirmed_remote.append(j)
 
     print(f"[LinkedIn] {len(confirmed_remote)} jobs after hybrid/onsite filter")
@@ -907,6 +966,119 @@ def is_fresh(job: dict) -> bool:
     return fresh
 
 
+# ── Remote-work hard filter ───────────────────────────────────────────────────
+
+# Sources that use remote-only APIs/filters — all results are remote-confirmed
+REMOTE_CONFIRMED_SOURCES = {
+    "Remotive", "RemoteOK", "WeWorkRemotely", "WorkingNomads", "RemoteCo",
+    "Jobspresso", "AIJobs", "Wellfound",
+    # LinkedIn bot uses f_WT=2 (remote-only work type filter)
+    "LinkedIn",
+}
+
+# Signals in title/description/location that hard-disqualify a job regardless of source
+HYBRID_ONSITE_PATTERNS = [
+    r"\bhybrid\b",
+    r"\bon[- ]?site\b",
+    r"\bon[- ]?location\b",
+    r"\bin[- ]?office\b",
+    r"\bdays? (per week |a week )?in (the )?office\b",
+    r"\brequired (to be )?in (the )?office\b",
+    r"\boffice[- ]based\b",
+    r"\bpresence (in|at) (our )?(office|hq|headquarter)\b",
+]
+
+# City/country names that, when used as a *work location* signal, disqualify the job.
+# These are matched against location field and key phrases in the description.
+LOCATION_DISQUALIFIERS = [
+    # Germany
+    r"\bFrankfurt\b", r"\bBerlin\b", r"\bMunich\b", r"\bMünchen\b",
+    r"\bHamburg\b", r"\bCologne\b", r"\bDüsseldorf\b", r"\bStuttgart\b",
+    # UK (office)
+    r"\bLondon[- ]based\b", r"\bbased in London\b", r"\bLondon office\b",
+    # Asia / APAC
+    r"\bSingapore[- ]based\b", r"\bbased in Singapore\b",
+    r"\bJapan[- ]based\b", r"\bbased in Japan\b", r"\bTokyo office\b",
+    r"\bIndia[- ]based\b", r"\bbased in India\b",
+    r"\bHyderabad\b", r"\bBangalore\b", r"\bBengaluru\b",
+    r"\bPune\b", r"\bChennai\b", r"\bMumbai office\b",
+    r"\bPhilippines[- ]based\b", r"\bbased in (?:the )?Philippines\b",
+    r"\bPakistan[- ]based\b", r"\bbased in Pakistan\b",
+    r"\bMalaysia[- ]based\b", r"\bbased in Malaysia\b",
+    # Americas (non-remote)
+    r"\bLATAM[- ]only\b", r"\bLatin America only\b",
+]
+
+# Timezone requirements that imply physical presence or exclude UTC+1
+TIMEZONE_DISQUALIFIERS = [
+    r"\bPKT\b",           # Pakistan
+    r"\bIST\b.*\bhours?\b",  # India Standard Time
+    r"\bJST\b",           # Japan
+    r"\bSGT\b",           # Singapore
+    r"\bPhilippine[s]? time\b",
+    r"\bmust overlap with (?:PST|EST|CST|MST)\b",
+    r"\bUS[- ]hours?\b", r"\bUS[- ]timezone\b",
+]
+
+# Non-English title signals (m/w/d, H/F are German/French gender markers in job titles)
+NON_ENGLISH_TITLE_PATTERNS = [
+    r"\bm/w/d\b", r"\bm/f/d\b", r"\bw/m/d\b",
+    r"\(H/F\)", r"\bH/F\b",
+    r"[^\x00-\x7F]{3,}",  # 3+ consecutive non-ASCII chars
+]
+
+
+def is_remote_compatible(job: dict) -> bool:
+    """
+    Hard filter: drop the job if it has any signal of hybrid, on-site, or
+    geography-restricted work that would prevent a Nigeria-based remote worker.
+    Returns True only if the job is safe to proceed with.
+    """
+    source   = job.get("source", "")
+    title    = job.get("title", "") or ""
+    location = job.get("location", "") or ""
+    desc     = job.get("description", "") or ""
+    combined = f"{title} {location} {desc}"
+
+    # 1. Non-English title — almost always means the role requires local presence
+    for pat in NON_ENGLISH_TITLE_PATTERNS:
+        if re.search(pat, title, re.IGNORECASE):
+            print(f"  [REMOTE-SKIP non-English title] {title}")
+            return False
+
+    # 2. Hybrid / on-site signals anywhere in the posting
+    for pat in HYBRID_ONSITE_PATTERNS:
+        if re.search(pat, combined, re.IGNORECASE):
+            print(f"  [REMOTE-SKIP hybrid/onsite] {title}")
+            return False
+
+    # 3. Hard location disqualifiers
+    for pat in LOCATION_DISQUALIFIERS:
+        if re.search(pat, combined, re.IGNORECASE):
+            print(f"  [REMOTE-SKIP location] {title}")
+            return False
+
+    # 4. Timezone disqualifiers
+    for pat in TIMEZONE_DISQUALIFIERS:
+        if re.search(pat, combined, re.IGNORECASE):
+            print(f"  [REMOTE-SKIP timezone] {title}")
+            return False
+
+    # 5. For non-confirmed sources, require an explicit remote signal in the description
+    if source not in REMOTE_CONFIRMED_SOURCES:
+        explicit_remote = re.search(
+            r"\b(fully remote|100%\s*remote|remote[- ]first|remote[- ]ok|"
+            r"remote[- ]friendly|work from anywhere|work from home|"
+            r"location[:\s]+remote|position[:\s]+remote)\b",
+            combined, re.IGNORECASE
+        )
+        if not explicit_remote:
+            print(f"  [REMOTE-SKIP no explicit remote confirmation] {title} ({source})")
+            return False
+
+    return True
+
+
 # ── Eligibility check (location restrictions) ─────────────────────────────────
 
 # Patterns that signal the job is restricted to regions that exclude Nigeria
@@ -999,8 +1171,12 @@ def main():
     fresh_jobs = [j for j in all_jobs if is_fresh(j)]
     print(f"Fresh jobs (within 24h): {len(fresh_jobs)}")
 
-    # Filter 2: location eligibility
-    eligible_jobs = [j for j in fresh_jobs if is_eligible(j)]
+    # Filter 2: remote compatibility (hybrid/onsite/location/timezone signals)
+    remote_jobs = [j for j in fresh_jobs if is_remote_compatible(j)]
+    print(f"Remote-compatible jobs: {len(remote_jobs)}")
+
+    # Filter 3: location eligibility (explicit country/region restrictions)
+    eligible_jobs = [j for j in remote_jobs if is_eligible(j)]
     print(f"Eligible jobs (no location block): {len(eligible_jobs)}")
 
     # Deduplicate
