@@ -995,6 +995,24 @@ HYBRID_ONSITE_PATTERNS = [
     r"\brequired (to be )?in (the )?office\b",
     r"\boffice[- ]based\b",
     r"\bpresence (in|at) (our )?(office|hq|headquarter)\b",
+    # Physical-workplace perks. A company describing its canteen or its city is
+    # describing a place it expects you to show up to, whatever the "Remote"
+    # location tag says.
+    r"\blive and work in\b",
+    r"\bcanteens?\b",
+    r"\bon every floor\b",
+    r"\bgaming corners?\b",
+    r"\brelocation (support|assistance|package|allowance)\b",
+    r"\bwill relocate\b|\bwilling to relocate\b",
+    r"\bfree (lunch|breakfast|meals|snacks)\b",
+    r"\bour (office|studio) in\b",
+    # Anchored so remote selling points ("no commute", "skip the daily commute")
+    # are not mistaken for a commuting requirement.
+    r"\bcommutable distance\b",
+    r"\bable to commute\b",
+    r"\bdaily commute to\b",
+    r"\bfree parking\b",
+    r"\bparking (?:is )?(?:available|provided|on-?site)\b",
 ]
 
 # City/country names that, when used as a *work location* signal, disqualify the job.
@@ -1094,17 +1112,24 @@ SOFT_LOCATION_PREFERENCE = [
     r"\bopen to remote (?:candidates )?(?:within|in) (?:the )?(US|USA|United States|UK|EU|Canada)\b",
 ]
 
-# Positive evidence that the employer genuinely hires without geographic limits
+# Positive evidence that the employer genuinely hires without geographic limits.
+#
+# These must describe the HIRING POLICY, not the company's footprint. Phrases
+# like "globally distributed teams" or "clients worldwide" describe what the
+# company looks like, not where it can employ you, and matching them produced a
+# false GLOBAL verdict on an on-site Shanghai role (Virtuos, Aug 2026). Keep
+# every pattern here anchored to hiring, working, or applying.
 GLOBAL_REMOTE_SIGNALS = [
     r"\bwork from anywhere\b",
     r"\banywhere in the world\b",
-    r"\bfully (?:distributed|remote), globally\b",
-    r"\bglobally distributed\b",
+    r"\bfully (?:distributed|remote),? globally\b",
     r"\bhire (?:from )?(?:anywhere|globally|worldwide)\b",
+    r"\bwe hire (?:in|from) (?:any|every) country\b",
     r"\bno location restrictions?\b",
-    r"\bany (?:country|timezone|time zone)\b",
-    r"\bworldwide\b",
-    r"\bAfrica\b", r"\bNigeria\b",
+    r"\bwork from any (?:country|timezone|time zone)\b",
+    r"\bopen to (?:candidates|applicants) (?:from )?(?:anywhere|worldwide|any country)\b",
+    r"\bapplicants? from (?:any country|anywhere|Africa|Nigeria)\b",
+    r"\b(?:employ|hiring) (?:in|across) \d+\+? countries\b",
 ]
 
 
