@@ -867,12 +867,21 @@ def send_digest(jobs: list[dict]):
             color = "#f59e0b"
         else:
             color = "#ef4444"
+        verdict = j.get("remote_verdict", "unverified")
+        if verdict == "global":
+            badge = ('<span style="background:#dcfce7;color:#166534;padding:2px 8px;'
+                     'border-radius:4px;font-size:11px;font-weight:600;">GLOBAL REMOTE</span>')
+        else:
+            badge = ('<span style="background:#fef3c7;color:#92400e;padding:2px 8px;'
+                     'border-radius:4px;font-size:11px;font-weight:600;">GEOGRAPHY UNCONFIRMED</span>')
+
         rows += f"""
         <tr style="border-bottom:1px solid #e5e7eb;">
           <td style="padding:12px 8px;font-weight:bold;color:#6b7280;">{i}</td>
           <td style="padding:12px 8px;">
             <a href="{j['url']}" style="color:#1d4ed8;font-weight:600;text-decoration:none;">{j['title']}</a><br>
-            <span style="color:#6b7280;font-size:13px;">{j['company']} &middot; {j['source']}</span>
+            <span style="color:#6b7280;font-size:13px;">{j['company']} &middot; {j['source']}</span><br>
+            {badge}
           </td>
           <td style="padding:12px 8px;text-align:center;">
             <span style="background:{color};color:white;padding:4px 10px;border-radius:20px;font-weight:bold;font-size:14px;">{score}</span>
@@ -1024,58 +1033,176 @@ TIMEZONE_DISQUALIFIERS = [
 NON_ENGLISH_TITLE_PATTERNS = [
     r"\bm/w/d\b", r"\bm/f/d\b", r"\bw/m/d\b",
     r"\(H/F\)", r"\bH/F\b",
-    r"[^\x00-\x7F]{3,}",  # 3+ consecutive non-ASCII chars
+    r"[^\x00-\x7F]{3,}",  # 3+ consecutive non-ASCII chars (CJK, Cyrillic)
+]
+
+# Words that appear in essentially every English job posting. If a description
+# of reasonable length contains almost none of them, the posting is not English.
+# This catches Romance-language posts (Portuguese/Spanish/French/Italian) that
+# use mostly-ASCII text and therefore slip past the non-ASCII check above.
+ENGLISH_STOPWORDS = [
+    "the", "and", "with", "for", "you", "are", "will", "have", "your",
+    "our", "this", "that", "from", "work", "team", "role",
+]
+
+# Function words specific to the languages we actually see in these feeds.
+# Requiring positive evidence here prevents terse English bullet-list postings
+# (which naturally contain few stopwords) from being misread as non-English.
+FOREIGN_FUNCTION_WORDS = [
+    # Portuguese / Spanish
+    "de", "para", "que", "com", "uma", "dos", "das", "por", "una", "los",
+    "las", "del", "como", "experiencia", "conhecimento", "vaga", "empresa",
+    # French
+    "les", "des", "vous", "nous", "votre", "pour", "dans", "avec",
+    # German
+    "und", "der", "die", "das", "mit", "wir", "sie", "für", "eine",
+    # Italian
+    "della", "delle", "nostro", "azienda",
+]
+
+# Employment-region markers. These signal the employer hires into a specific
+# country's payroll/benefits system. LinkedIn's f_WT=2 filter only means the
+# WORK is performed remotely — it does NOT mean the company hires globally.
+# A US company hiring a US-based remote employee is still f_WT=2, so these
+# markers are the only reliable way to catch region-locked "remote" roles.
+EMPLOYMENT_REGION_MARKERS = [
+    # US payroll / benefits / tax
+    (r"\b401\s?\(?k\)?\b",                       "US 401(k)"),
+    (r"\bW-?2\b",                                 "US W-2"),
+    (r"\bmedical,?\s*dental,?\s*(and\s*)?vision\b", "US health benefits"),
+    (r"\bdental (and|&) vision\b",                "US health benefits"),
+    (r"\bH-?1B\b",                                "US visa sponsorship"),
+    (r"\bgreen card\b",                           "US green card"),
+    (r"\bFLSA\b|\bEEO\b|\bADA\b",                 "US employment law"),
+    (r"\bin-person offsites?\b",                  "in-person offsites"),
+    # Explicit national salary bands imply national payroll
+    (r"\$\s?\d{2,3},\d{3}\s*(to|-|–)\s*\$?\s?\d{2,3},\d{3}", "USD salary band"),
+    (r"£\s?\d{2,3},\d{3}",                        "GBP salary band"),
+    (r"\bCAD\s?\$?\d{2,3},\d{3}",                 "CAD salary band"),
+    # UK / EU payroll
+    (r"\bNational Insurance\b",                   "UK payroll"),
+    (r"\bpension scheme\b",                       "UK/EU pension"),
+]
+
+# "Remote, but really we want you near an office" patterns
+SOFT_LOCATION_PREFERENCE = [
+    r"remote[- ]first,?\s*(with\s*)?(a\s*)?preference for candidates in",
+    r"preference (given )?to candidates (located |based )?in",
+    r"remote\s*[-–—]\s*(India|Philippines|Pakistan|Brazil|Mexico|Poland|Ukraine|Vietnam)",
+    r"headquarters:\s*remote\s*[-–—]\s*\w+",
+    r"remote \(?(US|USA|United States|UK|EU|Canada|EMEA|APAC|LATAM)\)?[- ]only",
+    r"\bopen to remote (?:candidates )?(?:within|in) (?:the )?(US|USA|United States|UK|EU|Canada)\b",
+]
+
+# Positive evidence that the employer genuinely hires without geographic limits
+GLOBAL_REMOTE_SIGNALS = [
+    r"\bwork from anywhere\b",
+    r"\banywhere in the world\b",
+    r"\bfully (?:distributed|remote), globally\b",
+    r"\bglobally distributed\b",
+    r"\bhire (?:from )?(?:anywhere|globally|worldwide)\b",
+    r"\bno location restrictions?\b",
+    r"\bany (?:country|timezone|time zone)\b",
+    r"\bworldwide\b",
+    r"\bAfrica\b", r"\bNigeria\b",
 ]
 
 
-def is_remote_compatible(job: dict) -> bool:
+def _looks_non_english(text: str) -> bool:
     """
-    Hard filter: drop the job if it has any signal of hybrid, on-site, or
-    geography-restricted work that would prevent a Nigeria-based remote worker.
-    Returns True only if the job is safe to proceed with.
+    True only when a description is both sparse in English stopwords AND rich in
+    foreign function words. Requiring both avoids flagging terse English
+    requirement lists, which legitimately contain very few stopwords.
     """
-    source   = job.get("source", "")
+    if len(text) < 400:
+        return False  # too short to judge reliably
+    low = text.lower()
+    english = sum(1 for w in ENGLISH_STOPWORDS if re.search(rf"\b{w}\b", low))
+    foreign = sum(1 for w in FOREIGN_FUNCTION_WORDS if re.search(rf"\b{w}\b", low))
+    return english < 6 and foreign >= 5
+
+
+def classify_remote(job: dict) -> tuple[str, str]:
+    """
+    Classify how confidently a Nigeria-based candidate can take this job.
+
+    Returns (verdict, note) where verdict is one of:
+      "region_locked" - clear evidence the role is tied to a country. Drop it.
+      "global"        - positive evidence of worldwide hiring. Safe to list.
+      "unverified"    - remote work, but no statement either way on geography.
+                        Keep, but surface the uncertainty rather than implying
+                        it is confirmed remote-for-Nigeria.
+    """
     title    = job.get("title", "") or ""
     location = job.get("location", "") or ""
     desc     = job.get("description", "") or ""
     combined = f"{title} {location} {desc}"
 
-    # 1. Non-English title — almost always means the role requires local presence
+    # 1. Non-English posting — implies the role is served by a local market
     for pat in NON_ENGLISH_TITLE_PATTERNS:
         if re.search(pat, title, re.IGNORECASE):
-            print(f"  [REMOTE-SKIP non-English title] {title}")
-            return False
+            return "region_locked", "non-English title"
+    if _looks_non_english(desc):
+        return "region_locked", "non-English description"
 
-    # 2. Hybrid / on-site signals anywhere in the posting
+    # 2. Hybrid / on-site
     for pat in HYBRID_ONSITE_PATTERNS:
         if re.search(pat, combined, re.IGNORECASE):
-            print(f"  [REMOTE-SKIP hybrid/onsite] {title}")
-            return False
+            return "region_locked", "hybrid/onsite requirement"
 
-    # 3. Hard location disqualifiers
+    # 3. Named work locations
     for pat in LOCATION_DISQUALIFIERS:
         if re.search(pat, combined, re.IGNORECASE):
-            print(f"  [REMOTE-SKIP location] {title}")
-            return False
+            return "region_locked", "named work location"
 
-    # 4. Timezone disqualifiers
+    # 4. Timezone requirements
     for pat in TIMEZONE_DISQUALIFIERS:
         if re.search(pat, combined, re.IGNORECASE):
-            print(f"  [REMOTE-SKIP timezone] {title}")
-            return False
+            return "region_locked", "timezone requirement"
 
-    # 5. For non-confirmed sources, require an explicit remote signal in the description
-    if source not in REMOTE_CONFIRMED_SOURCES:
-        explicit_remote = re.search(
-            r"\b(fully remote|100%\s*remote|remote[- ]first|remote[- ]ok|"
-            r"remote[- ]friendly|work from anywhere|work from home|"
-            r"location[:\s]+remote|position[:\s]+remote)\b",
-            combined, re.IGNORECASE
-        )
-        if not explicit_remote:
-            print(f"  [REMOTE-SKIP no explicit remote confirmation] {title} ({source})")
-            return False
+    # 5. "Remote but prefer near an office" / country-scoped remote
+    for pat in SOFT_LOCATION_PREFERENCE:
+        if re.search(pat, combined, re.IGNORECASE):
+            return "region_locked", "remote scoped to a region"
 
+    # 6. Country payroll/benefits markers — the signal f_WT=2 cannot see
+    for pat, label in EMPLOYMENT_REGION_MARKERS:
+        if re.search(pat, combined, re.IGNORECASE):
+            return "region_locked", f"employment-region marker ({label})"
+
+    # 7. Positive global-hiring evidence
+    for pat in GLOBAL_REMOTE_SIGNALS:
+        if re.search(pat, combined, re.IGNORECASE):
+            return "global", "explicit global hiring"
+
+    # 8. Remote work confirmed by source, geography simply never stated
+    if job.get("source") in REMOTE_CONFIRMED_SOURCES:
+        return "unverified", "remote work confirmed, hiring geography not stated"
+
+    explicit_remote = re.search(
+        r"\b(fully remote|100%\s*remote|remote[- ]first|remote[- ]ok|"
+        r"remote[- ]friendly|work from home|location[:\s]+remote)\b",
+        combined, re.IGNORECASE
+    )
+    if explicit_remote:
+        return "unverified", "remote stated, hiring geography not stated"
+
+    return "region_locked", "no remote confirmation"
+
+
+def is_remote_compatible(job: dict) -> bool:
+    """
+    Drop region-locked roles before they reach the scorer. Surviving jobs are
+    tagged with `remote_verdict` / `remote_note` so the digest and /reviewjobs
+    can distinguish confirmed-global roles from merely-unverified ones.
+    """
+    verdict, note = classify_remote(job)
+    job["remote_verdict"] = verdict
+    job["remote_note"] = note
+
+    if verdict == "region_locked":
+        print(f"  [REMOTE-SKIP {note}] {job.get('title','')}")
+        return False
     return True
 
 
