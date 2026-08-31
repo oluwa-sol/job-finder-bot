@@ -1101,6 +1101,87 @@ LOCATION_DISQUALIFIERS = [
     r"\bLATAM[- ]only\b", r"\bLatin America only\b",
 ]
 
+# Country names used for generic location detection.
+#
+# The previous approach enumerated disqualifying cities and countries by hand,
+# which only ever caught the ones already thought of. A Jobgether posting reading
+# "looking for an AI Engineer ... based in Brazil" passed cleanly because Brazil
+# was not on the list. Enumerating countries once, then matching patterns against
+# all of them, catches the whole class instead of one member at a time.
+#
+# Nigeria is deliberately absent: a posting naming Nigeria is good news.
+COUNTRY_NOUNS = [
+    "Argentina", "Australia", "Austria", "Bangladesh", "Belgium", "Brazil",
+    "Bulgaria", "Canada", "Chile", "China", "Colombia", "Croatia", "Cyprus",
+    "Czechia", "Czech Republic", "Denmark", "Egypt", "Estonia", "Finland",
+    "France", "Germany", "Ghana", "Greece", "Hungary", "Iceland", "India",
+    "Indonesia", "Ireland", "Israel", "Italy", "Japan", "Jordan", "Kenya",
+    "Latvia", "Lebanon", "Lithuania", "Luxembourg", "Malaysia", "Malta",
+    "Mexico", "Morocco", "Netherlands", "New Zealand", "Norway", "Pakistan",
+    "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia",
+    "Saudi Arabia", "Serbia", "Singapore", "Slovakia", "Slovenia",
+    "South Africa", "South Korea", "Korea", "Spain", "Sri Lanka", "Sweden",
+    "Switzerland", "Taiwan", "Thailand", "Tunisia", "Turkey", "Ukraine",
+    "United Arab Emirates", "United Kingdom", "United States", "Uruguay",
+    "Vietnam",
+]
+
+# Abbreviations and regions that behave like countries in job postings.
+COUNTRY_ABBREV = [
+    r"U\.?S\.?A?\.?", r"U\.?K\.?", r"UAE", r"EU", r"EEA",
+    r"LATAM", r"EMEA", r"APAC", r"ANZ",
+]
+
+_COUNTRY_ALT = "|".join(
+    [re.escape(c) for c in sorted(COUNTRY_NOUNS, key=len, reverse=True)] + COUNTRY_ABBREV
+)
+
+# Hiring-anchored location restriction. Each pattern ties the country to the
+# candidate, the role, or the hiring act, so "customers across Brazil" or
+# "offices in Germany" do not trigger it.
+COUNTRY_RESTRICTION_PATTERNS = [
+    rf"\blooking for\b.{{0,120}}?\bbased in\s+(?:the\s+)?({_COUNTRY_ALT})\b",
+    rf"\b(?:candidate|applicant|role|position|hire|employee|talent|contractor)s?\b"
+    rf".{{0,60}}?\b(?:based|located|residing|resident|living)\s+in\s+(?:the\s+)?({_COUNTRY_ALT})\b",
+    rf"\bmust be\s+(?:based|located|residing|a resident)\s*(?:in)?\s+(?:the\s+)?({_COUNTRY_ALT})\b",
+    rf"\b({_COUNTRY_ALT})[-\s]based\s+(?:candidate|applicant|role|position|team member|employee)s?\b",
+    rf"\bopen (?:only )?to\s+(?:candidates|applicants|residents)?\s*(?:in|from|based in)\s+"
+    rf"(?:the\s+)?({_COUNTRY_ALT})\b",
+    rf"\bresidents? of\s+(?:the\s+)?({_COUNTRY_ALT})\b",
+    rf"\bwork(?:ing)? (?:rights?|permit|authoriz(?:ation|ed)|eligib(?:le|ility))\s+(?:in|for)\s+"
+    rf"(?:the\s+)?({_COUNTRY_ALT})\b",
+    rf"\bhiring in\s+(?:the\s+)?({_COUNTRY_ALT})\s+only\b",
+    rf"\bthis (?:role|position) is\s+(?:based\s+)?in\s+(?:the\s+)?({_COUNTRY_ALT})\b",
+    # Bare form, kept last. Broader, and the reason a posting like Jobgether's
+    # is caught even when phrased outside the templates above.
+    rf"\bbased in\s+(?:the\s+)?({_COUNTRY_ALT})\s*[.,;]",
+]
+
+# A country name inside the company name usually marks a national subsidiary
+# ("Cimpress India", "TCS Ireland"), which hires into that country's entity
+# whatever the location tag says. Nouns only: demonyms would misfire on names
+# like American Express.
+COMPANY_COUNTRY_PATTERN = (
+    rf"(?:^|\s|[(\-,])({'|'.join(re.escape(c) for c in sorted(COUNTRY_NOUNS, key=len, reverse=True))})"
+    rf"(?:$|\s|[)\-,])"
+)
+
+
+def country_restriction(job: dict) -> str | None:
+    """Return the country this posting is tied to, or None."""
+    company = job.get("company", "") or ""
+    m = re.search(COMPANY_COUNTRY_PATTERN, company)
+    if m:
+        return f"company name names {m.group(1)}"
+
+    text = f"{job.get('title','')} {job.get('description','')}"
+    for pat in COUNTRY_RESTRICTION_PATTERNS:
+        m = re.search(pat, text, re.IGNORECASE)
+        if m:
+            return f"restricted to {m.group(1)}"
+    return None
+
+
 # Timezone requirements that imply physical presence or exclude UTC+1
 TIMEZONE_DISQUALIFIERS = [
     r"\bPKT\b",           # Pakistan
@@ -1300,6 +1381,11 @@ def classify_remote(job: dict) -> tuple[str, str]:
     for pat in LOCATION_DISQUALIFIERS:
         if re.search(pat, combined, re.IGNORECASE):
             return "region_locked", "named work location"
+
+    # 3b. Generic country restriction, in the description or the company name
+    country = country_restriction(job)
+    if country:
+        return "region_locked", country
 
     # 4. Timezone requirements
     for pat in TIMEZONE_DISQUALIFIERS:
