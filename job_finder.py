@@ -1093,10 +1093,19 @@ EMPLOYMENT_REGION_MARKERS = [
     (r"\bgreen card\b",                           "US green card"),
     (r"\bFLSA\b|\bEEO\b|\bADA\b",                 "US employment law"),
     (r"\bin-person offsites?\b",                  "in-person offsites"),
-    # Explicit national salary bands imply national payroll
+    # Explicit national salary bands imply national payroll. Two shapes:
+    # a currency-prefixed range ($120,000 - $190,000) and a currency-suffixed
+    # one (123,200.00 - 193,600.00 USD), which Proofpoint used and the
+    # prefix-only pattern missed.
     (r"\$\s?\d{2,3},\d{3}\s*(to|-|–)\s*\$?\s?\d{2,3},\d{3}", "USD salary band"),
+    (r"\d{2,3},\d{3}(?:\.\d{2})?\s*(?:to|-|–|—)\s*\d{2,3},\d{3}(?:\.\d{2})?\s*(?:USD|CAD|AUD|GBP|EUR)",
+                                                  "currency-suffixed salary band"),
     (r"£\s?\d{2,3},\d{3}",                        "GBP salary band"),
     (r"\bCAD\s?\$?\d{2,3},\d{3}",                 "CAD salary band"),
+    # Pay banded by US metro or state is a US-payroll tell on its own
+    (r"\bBase Pay Range\b",                       "US metro pay banding"),
+    (r"\bSF Bay Area\b|\bBay Area\b",             "US metro pay banding"),
+    (r"\b(?:New York City )?Metro Area\b",        "US metro pay banding"),
     # UK / EU payroll
     (r"\bNational Insurance\b",                   "UK payroll"),
     (r"\bpension scheme\b",                       "UK/EU pension"),
@@ -1131,6 +1140,19 @@ GLOBAL_REMOTE_SIGNALS = [
     r"\bapplicants? from (?:any country|anywhere|Africa|Nigeria)\b",
     r"\b(?:employ|hiring) (?:in|across) \d+\+? countries\b",
 ]
+
+
+# "Work from anywhere" is also the name of a common PERK: a few weeks a year
+# when staff may work abroad. That is the opposite of a global hiring policy,
+# and Proofpoint's "three-week Work from Anywhere option" produced a false
+# GLOBAL verdict on a role priced by US metro. Neutralise the perk phrasing
+# before testing for genuine worldwide-hiring language.
+WFA_PERK_PATTERN = re.compile(
+    r"\b(?:\d+|one|two|three|four|five|six|eight|twelve)[- ]weeks?\s+"
+    r"(?:of\s+)?(?:paid\s+)?work[ -]from[ -]anywhere\b"
+    r"|\bwork from anywhere\s+(?:option|policy|perk|benefit|program|programme|days?|weeks?)\b",
+    re.IGNORECASE,
+)
 
 
 def _looks_non_english(text: str) -> bool:
@@ -1195,9 +1217,10 @@ def classify_remote(job: dict) -> tuple[str, str]:
         if re.search(pat, combined, re.IGNORECASE):
             return "region_locked", f"employment-region marker ({label})"
 
-    # 7. Positive global-hiring evidence
+    # 7. Positive global-hiring evidence, with perk phrasing stripped first
+    global_text = WFA_PERK_PATTERN.sub(" ", combined)
     for pat in GLOBAL_REMOTE_SIGNALS:
-        if re.search(pat, combined, re.IGNORECASE):
+        if re.search(pat, global_text, re.IGNORECASE):
             return "global", "explicit global hiring"
 
     # 8. Remote work confirmed by source, geography simply never stated
