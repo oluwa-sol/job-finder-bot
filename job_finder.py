@@ -1002,20 +1002,41 @@ def parse_posted_date(date_str: str) -> datetime | None:
             continue
     return None
 
+# How far back to accept a listing, per source.
+#
+# LinkedIn is a firehose already narrowed to the last 24h by f_TPR=r86400, so a
+# 24h window there is free. The curated remote-only boards are the opposite: low
+# volume, and listings stay open for weeks. Measured on a live pull of 51 jobs,
+# the median age was 13.9 days and a 24h window admitted 5 of them. That single
+# constant, not the scrapers, was what starved the feed of curated results.
+#
+#   window   curated jobs surviving (of 46)
+#   24h       5
+#   7d       20
+#   14d      26
+#   30d      41
+#
+# 14 days keeps postings that are realistically still open without trawling
+# archives. Each job is shown once ever thanks to seen_jobs.json, so a wider
+# window costs a one-off backfill rather than repeated noise.
+CURATED_FRESHNESS_DAYS = 14
+
+
 def is_fresh(job: dict) -> bool:
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
     # LinkedIn sets posted=now() at scrape time — not a real post date.
     # LinkedIn already uses f_TPR=r86400 to request only last-24h listings,
     # so all LinkedIn results from a live run are fresh. Trust the API filter.
     if job.get("source") == "LinkedIn":
         return True
+    cutoff = datetime.now(timezone.utc) - timedelta(days=CURATED_FRESHNESS_DAYS)
     dt = parse_posted_date(job.get("posted", ""))
     if dt is None:
         return True
+    age_days = (datetime.now(timezone.utc) - dt).total_seconds() / 86400
+    job["age_days"] = round(age_days, 1)
     fresh = dt >= cutoff
     if not fresh:
-        age_hours = (datetime.now(timezone.utc) - dt).total_seconds() / 3600
-        print(f"  [STALE {age_hours:.0f}h] Skipping: {job['title']} at {job['company']}")
+        print(f"  [STALE {age_days:.0f}d] Skipping: {job['title']} at {job['company']}")
     return fresh
 
 
