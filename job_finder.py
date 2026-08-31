@@ -1097,9 +1097,20 @@ EMPLOYMENT_REGION_MARKERS = [
     # a currency-prefixed range ($120,000 - $190,000) and a currency-suffixed
     # one (123,200.00 - 193,600.00 USD), which Proofpoint used and the
     # prefix-only pattern missed.
-    (r"\$\s?\d{2,3},\d{3}\s*(to|-|–)\s*\$?\s?\d{2,3},\d{3}", "USD salary band"),
+    # Allow a currency code to sit between the figure and the separator, as in
+    # "$127,000 USD - $145,000 USD" (Tebra), which a dash-adjacent pattern misses.
+    (r"[$£€]\s?\d{2,3},\d{3}(?:\.\d{2})?\s*(?:USD|CAD|AUD|GBP|EUR)?\s*(?:to|-|–|—)\s*"
+     r"[$£€]?\s?\d{2,3},\d{3}",                    "currency salary band"),
+    (r"\d{2,3},\d{3}(?:\.\d{2})?\s*(?:USD|CAD|AUD|GBP|EUR)\s*(?:to|-|–|—)\s*"
+     r"\d{2,3},\d{3}(?:\.\d{2})?\s*(?:USD|CAD|AUD|GBP|EUR)", "currency-suffixed salary band"),
     (r"\d{2,3},\d{3}(?:\.\d{2})?\s*(?:to|-|–|—)\s*\d{2,3},\d{3}(?:\.\d{2})?\s*(?:USD|CAD|AUD|GBP|EUR)",
                                                   "currency-suffixed salary band"),
+    # US pay-transparency and geo-banding language
+    (r"\bpay transparency\b",                     "US pay transparency law"),
+    (r"\bCalifornia residents\b",                 "US state privacy notice"),
+    (r"\bgeo[- ]?zones?\b",                       "US geo-zone pay banding"),
+    (r"\bZone \d\b[^.]{0,40}\bNational Average\b", "US geo-zone pay banding"),
+    (r"\bveteran (?:or disability )?status\b",    "US EEO language"),
     (r"£\s?\d{2,3},\d{3}",                        "GBP salary band"),
     (r"\bCAD\s?\$?\d{2,3},\d{3}",                 "CAD salary band"),
     # Pay banded by US metro or state is a US-payroll tell on its own
