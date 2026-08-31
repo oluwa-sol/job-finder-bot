@@ -27,6 +27,7 @@ RECIPIENT_EMAIL    = os.getenv("RECIPIENT_EMAIL", "kelvinjr995@gmail.com")
 BOT_DIR      = Path(__file__).parent
 SEEN_FILE    = BOT_DIR / "seen_jobs.json"
 LATEST_FILE  = BOT_DIR / "jobs_latest.json"
+SOURCE_HEALTH_FILE = BOT_DIR / "source_health.json"
 
 SEARCH_KEYWORDS = [
     # Core profile titles
@@ -194,7 +195,9 @@ def fetch_wwr() -> list[dict]:
 def fetch_remoteok() -> list[dict]:
     jobs = []
     try:
-        r = requests.get("https://remoteok.com/api", headers={"User-Agent": "Mozilla/5.0"}, timeout=15)
+        # A bare "Mozilla/5.0" UA gets the connection reset by RemoteOK. The
+        # full browser UA in HEADERS returns 200 with the complete feed.
+        r = requests.get("https://remoteok.com/api", headers=HEADERS, timeout=15)
         data = r.json()
         for j in data:
             if not isinstance(j, dict) or "position" not in j:
@@ -285,6 +288,15 @@ def fetch_jobicy() -> list[dict]:
 # ── Source: Himalayas ─────────────────────────────────────────────────────────
 
 def fetch_himalayas() -> list[dict]:
+    """
+    Himalayas job pages now return 403 to scrapers, so the previous approach of
+    fetching each page for its description dropped every job as "no-description"
+    and the source silently went to zero in Aug 2026.
+
+    The RSS feed already carries what we need: the full description in the
+    `content` field, plus structured locationRestriction and timezoneRestriction
+    fields that are far more reliable than inferring geography from prose.
+    """
     jobs = []
     try:
         feed = feedparser.parse("https://himalayas.app/jobs/rss")
@@ -292,37 +304,34 @@ def fetch_himalayas() -> list[dict]:
             title = entry.get("title", "")
             if not is_relevant(title):
                 continue
+
+            # Full HTML description lives in content[0].value; summary is a stub
+            body = ""
+            content = entry.get("content") or []
+            if content:
+                body = clean_html(content[0].get("value", ""))
+            if not body:
+                body = clean_html(entry.get("summary", ""))
+
+            # Structured restriction fields, appended so classify_remote sees them
+            loc_r = (entry.get("himalayasjobs_locationrestriction") or "").strip()
+            tz_r  = (entry.get("himalayasjobs_timezonerestriction") or "").strip()
+            if loc_r:
+                body += f"\nLocation restriction: {loc_r}"
+            if tz_r:
+                body += f"\nTimezone restriction: {tz_r}"
+
             jobs.append({
                 "title": title,
-                "company": entry.get("author", ""),
+                "company": entry.get("himalayasjobs_companyname", "") or entry.get("author", ""),
                 "url": entry.get("link", ""),
-                "description": "",  # fetch full description below
-                "location": "Remote",
+                "description": body[:4000],
+                "location": loc_r or "Remote",
                 "posted": entry.get("published", ""),
                 "source": "Himalayas",
             })
     except Exception as e:
         print(f"[Himalayas] RSS error: {e}")
-
-    # Fetch full descriptions (cap at 25 to control time)
-    jobs = jobs[:25]
-    print(f"[Himalayas] Fetching full descriptions for {len(jobs)} jobs...")
-    for j in jobs:
-        try:
-            r = requests.get(j["url"], headers=HEADERS, timeout=10)
-            if r.status_code == 200:
-                soup = BeautifulSoup(r.text, "lxml")
-                desc_el = (
-                    soup.find("div", class_="job-description") or
-                    soup.find("div", {"class": lambda c: c and "description" in c.lower()}) or
-                    soup.find("section", {"class": lambda c: c and "description" in c.lower()}) or
-                    soup.find("main")
-                )
-                if desc_el:
-                    j["description"] = clean_html(desc_el.get_text())[:4000]
-            time.sleep(1)
-        except Exception:
-            pass
 
     # Filter: drop if no description, geo-restricted, or hybrid/onsite
     clean = []
@@ -345,30 +354,33 @@ def fetch_himalayas() -> list[dict]:
 # ── Source: Working Nomads ────────────────────────────────────────────────────
 
 def fetch_workingnomads() -> list[dict]:
+    """
+    The /feed?category=... RSS endpoints started returning 404 (checked Aug 2026).
+    The JSON API still serves the full board and carries a real location field,
+    which is more useful than the RSS ever was.
+    """
     jobs = []
-    feeds = [
-        "https://www.workingnomads.com/feed?category=development",
-        "https://www.workingnomads.com/feed?category=data",
-        "https://www.workingnomads.com/feed?category=ai",
-    ]
-    for feed_url in feeds:
-        try:
-            feed = feedparser.parse(feed_url)
-            for entry in feed.entries:
-                title = entry.get("title", "")
-                if not is_relevant(title):
-                    continue
-                jobs.append({
-                    "title": title,
-                    "company": entry.get("author", ""),
-                    "url": entry.get("link", ""),
-                    "description": clean_html(entry.get("summary", "")),
-                    "location": "Remote",
-                    "posted": entry.get("published", ""),
-                    "source": "WorkingNomads",
-                })
-        except Exception as e:
-            print(f"[WorkingNomads] Error on {feed_url}: {e}")
+    try:
+        r = requests.get("https://www.workingnomads.com/api/exposed_jobs/",
+                         headers=HEADERS, timeout=20)
+        if r.status_code != 200:
+            print(f"[WorkingNomads] HTTP {r.status_code}")
+            return jobs
+        for j in r.json():
+            title = j.get("title", "")
+            if not is_relevant(title):
+                continue
+            jobs.append({
+                "title": title,
+                "company": j.get("company_name", ""),
+                "url": j.get("url", ""),
+                "description": clean_html(j.get("description", "")),
+                "location": j.get("location", "Remote") or "Remote",
+                "posted": j.get("pub_date", ""),
+                "source": "WorkingNomads",
+            })
+    except Exception as e:
+        print(f"[WorkingNomads] Error: {e}")
     print(f"[WorkingNomads] {len(jobs)} relevant jobs found")
     return jobs
 
@@ -850,13 +862,44 @@ Return ONLY a JSON object, no markdown, no explanation outside the JSON:
 
 # ── Email digest ──────────────────────────────────────────────────────────────
 
-def send_digest(jobs: list[dict]):
+def build_health_banner(health: dict) -> str:
+    """Red banner in the digest when sources go silent, so decay is visible."""
+    if not health:
+        return ""
+    dead = {s: v for s, v in health.items() if v["status"] != "ok"}
+    if not dead:
+        return ""
+
+    live = len(health) - len(dead)
+    rows = ", ".join(
+        f"{s} ({v['status']})" if v["status"].startswith("error") else s
+        for s, v in sorted(dead.items())
+    )
+    severity = "#dc2626" if live <= len(health) / 2 else "#f59e0b"
+    return f"""
+      <div style="border-left:4px solid {severity};background:#fef2f2;padding:12px 16px;
+                  margin:16px 0;border-radius:4px;">
+        <div style="font-weight:700;color:{severity};font-size:14px;">
+          Source health: {live} of {len(health)} producing
+        </div>
+        <div style="color:#374151;font-size:13px;margin-top:4px;">
+          Silent this run: {rows}
+        </div>
+        <div style="color:#6b7280;font-size:12px;margin-top:6px;">
+          Fewer live sources means the feed leans harder on LinkedIn worldwide,
+          which is noisier and surfaces more region-locked roles.
+        </div>
+      </div>"""
+
+
+def send_digest(jobs: list[dict], health: dict | None = None):
     if not GMAIL_APP_PASSWORD or GMAIL_APP_PASSWORD == "your_gmail_app_password_here":
         print("[Email] Gmail app password not set. Skipping email. Check .env file.")
         return
 
     top = jobs[:10]
     now = datetime.now().strftime("%d %b %Y, %I:%M %p")
+    health_banner = build_health_banner(health or {})
 
     rows = ""
     for i, j in enumerate(top, 1):
@@ -896,6 +939,7 @@ def send_digest(jobs: list[dict]):
     <html><body style="font-family:Arial,sans-serif;max-width:900px;margin:0 auto;padding:20px;">
       <h2 style="color:#111827;">Job Matches - {now}</h2>
       <p style="color:#6b7280;">{len(jobs)} new jobs found and scored. Top {len(top)} shown below.</p>
+      {health_banner}
       <table style="width:100%;border-collapse:collapse;margin-top:16px;">
         <thead>
           <tr style="background:#f3f4f6;">
@@ -1158,6 +1202,14 @@ GLOBAL_REMOTE_SIGNALS = [
 # and Proofpoint's "three-week Work from Anywhere option" produced a false
 # GLOBAL verdict on a role priced by US metro. Neutralise the perk phrasing
 # before testing for genuine worldwide-hiring language.
+# Location values that carry no geographic restriction. Anything else in a
+# structured location field names a place and is treated as a restriction.
+GENERIC_LOCATION = re.compile(
+    r"\s*(?:remote|remote\s*/?\s*(?:global|worldwide|anywhere)|global(?:ly)?|"
+    r"worldwide|anywhere|any\s*where|distributed|n/?a|unspecified|-|)\s*",
+    re.IGNORECASE,
+)
+
 WFA_PERK_PATTERN = re.compile(
     r"\b(?:\d+|one|two|three|four|five|six|eight|twelve)[- ]weeks?\s+"
     r"(?:of\s+)?(?:paid\s+)?work[ -]from[ -]anywhere\b"
@@ -1203,7 +1255,22 @@ def classify_remote(job: dict) -> tuple[str, str]:
     if _looks_non_english(desc):
         return "region_locked", "non-English description"
 
-    # 2. Hybrid / on-site
+    # 2. Structured location field. The curated boards (Himalayas, RemoteOK,
+    #    WorkingNomads) return a real value here such as "Portugal", "South
+    #    Korea" or "Europe, North America" rather than a blanket "Remote".
+    #    When present it is the most reliable geography signal available, so
+    #    trust it over anything inferred from the prose.
+    loc = location.strip()
+    if loc:
+        # An explicit global tag from a curated board is positive evidence, not
+        # merely an absence of restriction, so check it before the generic set.
+        if re.search(r"\b(?:Africa|Nigeria|Worldwide|Global(?:ly)?|Anywhere)\b",
+                     loc, re.IGNORECASE):
+            return "global", f"location field open worldwide: {loc[:40]}"
+        if not GENERIC_LOCATION.fullmatch(loc):
+            return "region_locked", f"location field restricts to: {loc[:40]}"
+
+    # 3. Hybrid / on-site
     for pat in HYBRID_ONSITE_PATTERNS:
         if re.search(pat, combined, re.IGNORECASE):
             return "region_locked", "hybrid/onsite requirement"
@@ -1339,17 +1406,52 @@ def main():
         seen_ts = {}
     all_jobs = []
 
-    # Fetch from all sources — each wrapped so one failure never kills the run
+    # Fetch from all sources — each wrapped so one failure never kills the run.
+    # Health is recorded per source so a dead scraper shows up in the digest
+    # instead of silently shrinking the feed. Eight of these produced nothing
+    # for weeks in Aug 2026 and nobody noticed, because the only signal was a
+    # print buried in the GitHub Actions log.
+    # Retired Aug 2026 after each was verified dead at the endpoint, not merely
+    # unlucky. They cost roughly 50s per run in connection timeouts for nothing:
+    #   RemoteCo   - connection times out (WinError 10060)
+    #   Jobspresso - RSS returns 200 but an empty channel, no items
+    #   AIJobs     - feed URL 404s
+    #   Wellfound  - jobs.json returns 403, needs authentication now
+    #   Indeed     - returns nothing, blocks automated access
+    # Re-enable any of them if the endpoint comes back.
+    RETIRED = [fetch_remoteco, fetch_jobspresso, fetch_aijobs,
+               fetch_wellfound, fetch_indeed]
+
+    source_health = {}
     for fetcher in [
         fetch_remotive, fetch_wwr, fetch_remoteok, fetch_arbeitnow,
-        fetch_jobicy, fetch_himalayas, fetch_workingnomads, fetch_remoteco,
-        fetch_jobspresso, fetch_aijobs, fetch_wellfound,
-        fetch_indeed, fetch_linkedin,
+        fetch_jobicy, fetch_himalayas, fetch_workingnomads,
+        fetch_linkedin,
     ]:
+        label = fetcher.__name__.replace("fetch_", "")
+        t0 = time.time()
         try:
-            all_jobs += fetcher()
+            got = fetcher()
+            all_jobs += got
+            source_health[label] = {
+                "count": len(got),
+                "status": "ok" if got else "empty",
+                "seconds": round(time.time() - t0, 1),
+            }
         except Exception as e:
             print(f"[{fetcher.__name__}] Fatal error, skipping: {e}")
+            source_health[label] = {
+                "count": 0,
+                "status": f"error: {type(e).__name__}",
+                "seconds": round(time.time() - t0, 1),
+            }
+
+    healthy = [s for s, v in source_health.items() if v["status"] == "ok"]
+    dead    = [s for s, v in source_health.items() if v["status"] != "ok"]
+    print(f"\nSource health: {len(healthy)} producing, {len(dead)} silent")
+    for s, v in sorted(source_health.items(), key=lambda kv: -kv[1]["count"]):
+        print(f"  {s:<16} {v['count']:>4} jobs  {v['seconds']:>6}s  {v['status']}")
+    SOURCE_HEALTH_FILE.write_text(json.dumps(source_health, indent=2), encoding="utf-8")
 
     print(f"\nTotal raw jobs: {len(all_jobs)}")
 
@@ -1379,6 +1481,18 @@ def main():
         print("No new jobs found this run.")
         return
 
+    # Prioritise curated remote-only boards ahead of LinkedIn in the scoring
+    # queue. LinkedIn is searched with location=Worldwide, which is correct for
+    # finding globally-open roles but also the noisiest source by a distance.
+    # When the scoring budget is the binding constraint, spend it on the boards
+    # that only list remote work in the first place.
+    CURATED_FIRST = ["Himalayas", "WeWorkRemotely", "RemoteOK", "Remotive",
+                     "WorkingNomads", "Jobicy", "Arbeitnow"]
+    def source_rank(j):
+        src = j.get("source", "")
+        return CURATED_FIRST.index(src) if src in CURATED_FIRST else len(CURATED_FIRST)
+    new_jobs.sort(key=source_rank)
+
     # Score with Claude (cap at 50 to control API cost)
     to_score = new_jobs[:50]
     print(f"\nScoring {len(to_score)} jobs with Claude...")
@@ -1407,7 +1521,7 @@ def main():
     # Send email
     high_quality = [j for j in scored if j["score"] >= 70]
     if high_quality:
-        send_digest(high_quality)
+        send_digest(high_quality, source_health)
     else:
         print("[Email] No jobs scored 70+, skipping digest.")
 
