@@ -560,7 +560,7 @@ def fetch_linkedin() -> list[dict]:
             encoded = keyword.replace(" ", "%20")
             url = (
                 f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search"
-                f"?keywords={encoded}&location=Worldwide&f_TPR=r86400&f_WT=2&start=0"
+                f"?keywords={encoded}&location=Worldwide&f_TPR=r50400&f_WT=2&start=0"
             )
             r = requests.get(url, headers=HEADERS, timeout=15)
             if r.status_code != 200:
@@ -1004,8 +1004,8 @@ def parse_posted_date(date_str: str) -> datetime | None:
 
 # How far back to accept a listing, per source.
 #
-# LinkedIn is a firehose already narrowed to the last 24h by f_TPR=r86400, so a
-# 24h window there is free. The curated remote-only boards are the opposite: low
+# LinkedIn is a firehose already narrowed to the last 14h by f_TPR=r50400, so a
+# 14h window there is free. The curated remote-only boards are the opposite: low
 # volume, and listings stay open for weeks. Measured on a live pull of 51 jobs,
 # the median age was 13.9 days and a 24h window admitted 5 of them. That single
 # constant, not the scrapers, was what starved the feed of curated results.
@@ -1024,7 +1024,7 @@ CURATED_FRESHNESS_DAYS = 14
 
 def is_fresh(job: dict) -> bool:
     # LinkedIn sets posted=now() at scrape time — not a real post date.
-    # LinkedIn already uses f_TPR=r86400 to request only last-24h listings,
+    # LinkedIn already uses f_TPR=r50400 to request only last-14h listings,
     # so all LinkedIn results from a live run are fresh. Trust the API filter.
     if job.get("source") == "LinkedIn":
         return True
