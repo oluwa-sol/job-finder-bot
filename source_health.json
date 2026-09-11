@@ -5,14 +5,14 @@
     "seconds": 0.1
   },
   "wwr": {
-    "count": 23,
+    "count": 22,
     "status": "ok",
     "seconds": 1.6
   },
   "remoteok": {
     "count": 8,
     "status": "ok",
-    "seconds": 0.4
+    "seconds": 0.9
   },
   "arbeitnow": {
     "count": 1,
@@ -22,21 +22,21 @@
   "jobicy": {
     "count": 10,
     "status": "ok",
-    "seconds": 4.8
+    "seconds": 6.6
   },
   "himalayas": {
-    "count": 0,
-    "status": "empty",
-    "seconds": 0.2
+    "count": 3,
+    "status": "ok",
+    "seconds": 0.4
   },
   "workingnomads": {
     "count": 6,
     "status": "ok",
-    "seconds": 0.4
+    "seconds": 0.7
   },
   "linkedin": {
-    "count": 17,
+    "count": 21,
     "status": "ok",
-    "seconds": 79.2
+    "seconds": 80.9
   }
 }
