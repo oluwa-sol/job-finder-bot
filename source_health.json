@@ -17,26 +17,26 @@
   "arbeitnow": {
     "count": 1,
     "status": "ok",
-    "seconds": 0.3
+    "seconds": 0.2
   },
   "jobicy": {
     "count": 10,
     "status": "ok",
-    "seconds": 4.9
+    "seconds": 4.8
   },
   "himalayas": {
     "count": 1,
     "status": "ok",
-    "seconds": 0.3
+    "seconds": 0.2
   },
   "workingnomads": {
     "count": 7,
     "status": "ok",
-    "seconds": 1.0
+    "seconds": 0.3
   },
   "linkedin": {
-    "count": 14,
+    "count": 17,
     "status": "ok",
-    "seconds": 80.0
+    "seconds": 78.3
   }
 }
