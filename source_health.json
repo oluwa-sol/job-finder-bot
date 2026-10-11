@@ -7,7 +7,7 @@
   "wwr": {
     "count": 8,
     "status": "ok",
-    "seconds": 1.2
+    "seconds": 1.7
   },
   "remoteok": {
     "count": 8,
@@ -15,14 +15,14 @@
     "seconds": 0.7
   },
   "arbeitnow": {
-    "count": 4,
+    "count": 3,
     "status": "ok",
     "seconds": 0.4
   },
   "jobicy": {
     "count": 11,
     "status": "ok",
-    "seconds": 6.6
+    "seconds": 5.6
   },
   "himalayas": {
     "count": 1,
@@ -35,8 +35,8 @@
     "seconds": 0.8
   },
   "linkedin": {
-    "count": 17,
+    "count": 15,
     "status": "ok",
-    "seconds": 78.2
+    "seconds": 77.4
   }
 }
