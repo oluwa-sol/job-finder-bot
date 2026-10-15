@@ -1,8 +1,8 @@
 [
   {
-    "title": "Python Gen AI Developer",
+    "title": "Python GenAI Developer",
     "company": "Virtusa",
-    "url": "https://www.linkedin.com/jobs/view/4477012194",
+    "url": "https://www.linkedin.com/jobs/view/4477005422",
     "description": "Job RequirementsWe are seeking a highly skilled and experienced Lead Software Engineer to join our team. In this role, you will lead the design and development of scalable, API-driven solutions leveraging modern technology stacks and Generative AI capabilities. You will collaborate closely with cross-functional teams to deliver innovative solutions that meet client requirements, timelines, and budgets.Key ResponsibilitiesDesign and implement scalable software solutions using modern technology stacks. In-depth knowledge and hands-on experience with Python frameworks like Django, Flask, FastAPI, or others depending on the specialization.Develop and integrate APIs for Gen AI orchestration and data analytics workflows.Integrate popular Large Language Models (LLMs) such as OpenAI GPT, PaLM 2, Dolly, Claude 2, Cohere, etc., via API endpoints.Apply prompt engineering techniques and implement LLM agents (e.g., LangChain).Work with vector databases like Pinecone, Chroma, or FAISS for advanced AI solutions.Conduct rapid experiments to evaluate new LLM versions and features.Collaborate with Gen AI leads and other team members to deliver high-quality solutions.Perform basic data engineering tasks to load structured and unstructured data from source systems to target data stores.Debug and troubleshoot software or design issues effectively.Required QualificationsMinimum 7+ years of experience in software engineering or data analytics roles.Strong programming skills in Python (mandatory), PySpark or JavaProven experience in building API-based scalable solutions.Hands-on experience with LLM integration and prompt engineering.Familiarity with modern AI frameworks and orchestration tools.Preferred SkillsExposure to Gen AI platforms and advanced AI model experimentation.Strong understanding of data engineering principles.Excellent communication and project management skills.Work Experience5-7Years Show more Show less",
     "location": "Remote",
     "posted": "",
@@ -11,22 +11,7 @@
     "remote_verdict": "unverified",
     "remote_note": "remote work confirmed, hiring geography not stated",
     "score": 42,
-    "reason": "Strong technical match in Gen AI/LLM integration and Python ecosystem, but significantly under-required 7+ years experience (only 1.5 years professional). Role emphasizes traditional software engineering and data engineering depth that candidate's automation-focused background doesn't demonstrate.",
-    "scraped_at": "2026-10-14T22:55:07.218034+00:00"
-  },
-  {
-    "title": "AITrainers: Remote AI Trainers (Generalist and Python Coding Experts)",
-    "company": "",
-    "url": "https://weworkremotely.com/remote-jobs/aitrainers-remote-ai-trainers-generalist-and-python-coding-experts",
-    "description": "Headquarters: Delaware URL: https://aitrainers.online/ We are expanding our global roster and looking for top-tier Generalist&nbsp; and Python AI Trainers to join our fast-growing team. Role 1: Generalist AI Trainer As a Generalist Trainer, you will craft complex prompts, evaluate model responses for nuance, logic, and factual accuracy, and rewrite answers to reflect expert-level human reasoning across various domains. Compensation: $30 – $45 per hour Key Responsibilities: Design challenging prompts to test the limits of advanced LLMs. Fact-check, critique, and improve model-generated responses for clarity, tone, and accuracy. Compare multiple model outputs and provide detailed justifications for your rankings. What We're Looking For: Bachelor’s, Master’s, or Ph.D. degree in any academic discipline (or students on session). Exceptional writing, editing, and critical thinking skills with flawless attention to detail. Ability to explain complex topics clearly and concisely. Role 2: Python AI Trainer As a Python AI Trainer, you will focus on evaluating and improving code-generation capabilities, debugging intricate algorithms, and authoring complex programming tasks to test advanced coding models. Compensation: $55 – $120 per hour (based on expertise and complexity) Key Responsibilities: Write clean, efficient, and well-documented Python code to test LLM coding assistants. Evaluate model-generated scripts for bugs, edge cases, security vulnerabilities, and optimal performance. Create diverse, multi-step coding prompts and benchmark solutions. What We're Looking For: Strong proficiency in Python and familiarity with popular libraries/frameworks. Solid understanding of software development principles, data structures, and algorithms. Experience in code review, software engineering, or technical writing is a strong plus. Why Join AITrainers Online? Competitive Pay &amp; Weekly Payouts: Enjoy reliable earnings paid weekly via PayPal . Total Flexibility: Work 100% remotely on a flexible schedule. Set your own hours and work from anywhere in the world. Continuous Learning: Get an insider’s look at the cutting edge of generative AI technology while sharpening your own analytical and technical skills. To apply: https://weworkremotely.com/remote-jobs/aitrainers-remote-ai-trainers-generalist-and-python-coding-experts",
-    "location": "Remote",
-    "posted": "Wed, 14 Oct 2026 20:04:30 +0000",
-    "source": "WeWorkRemotely",
-    "age_days": 0.1,
-    "remote_verdict": "global",
-    "remote_note": "explicit global hiring",
-    "score": 28,
-    "reason": "While Damilola has strong Python and coding fundamentals, this role is a significant step backward—evaluating AI outputs at $30-120/hour is far below their demonstrated expertise in building production multi-agent systems. The position lacks technical depth, growth trajectory, and aligns poorly with their senior builder profile.",
-    "scraped_at": "2026-10-14T22:55:07.218034+00:00"
+    "reason": "Strong technical alignment in GenAI/LLM integration and API development, but significant experience gap (7+ years required vs. ~1 year professional history) and lack of demonstrated Python framework expertise (Django, Flask, FastAPI) are major concerns. Role expects senior leadership capabilities that current profile doesn't support.",
+    "scraped_at": "2026-10-15T02:35:36.716798+00:00"
   }
 ]
