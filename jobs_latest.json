@@ -2,7 +2,7 @@
   {
     "title": "AI Engineer",
     "company": "Lenovo",
-    "url": "https://www.linkedin.com/jobs/view/4479604937",
+    "url": "https://www.linkedin.com/jobs/view/4479623097",
     "description": "We are Lenovo. We do what we say. We own what we do. We WOW our customers.Lenovo is a US$83 billion revenue global technology powerhouse, ranked #153 in the Fortune Global 500, and serving millions of customers every day in 180 markets. Focused on a bold vision to deliver Smarter Technology for All, Lenovo has built on its success as the world’s largest PC company with a full-stack portfolio of AI-enabled, AI-ready, and AI-optimized devices (PCs, workstations, smartphones, tablets), infrastructure (server, storage, edge, high performance computing and software defined infrastructure), software, solutions, and services. Lenovo’s continued investment in world-changing innovation is building a more equitable, trustworthy, and smarter future for everyone, everywhere. Lenovo is listed on the Hong Kong stock exchange under Lenovo Group Limited (HKSE: 992) (ADR: LNVGY).This transformation together with Lenovo’s world-changing innovation is building a more inclusive, trustworthy, and smarter future for everyone, everywhere. To find out more visit www.lenovo.com, and read about the latest news via our StoryHub.AI EngineerAbout The RoleLenovo is seeking a motivated and innovative AI Engineer to support the development and implementation of AI-powered solutions that improve business processes, increase efficiency, and drive digital transformation. This role focuses on leveraging Artificial Intelligence, Generative AI, and intelligent automation to enhance business operations and employee experiences.What You'll DoAI Development: Design, develop, and implement AI/ML and Generative AI solutions to address business challenges.Process Automation: Support the implementation of Intelligent Process Automation (IPA), Robotic Process Automation (RPA), and workflow automation solutions.Application Development: Build and deploy AI applications, intelligent agents, models, and data pipelines.Business Transformation: Collaborate with business and technology teams to identify opportunities for AI-driven innovation and process improvement.System Integration: Integrate AI solutions with enterprise applications, data platforms, and existing business systems.Performance Optimization: Monitor and improve AI solutions to enhance accuracy, reliability, and efficiency.Innovation: Explore emerging AI technologies and identify opportunities to improve productivity and business operations.What We're Looking ForRequired QualificationsBachelor's or Master's degree in Computer Science, Artificial Intelligence, Data Science, Software Engineering, or a related field.Entry-level position; 0–2 years of relevant experience. Recent graduates are encouraged to apply.Foundational knowledge of Python programming and AI/ML concepts.Familiarity with Generative AI, Large Language Models (LLMs), and AI applications.Basic understanding of APIs, data pipelines, and software development principles.Strong analytical, problem-solving, and communication skills.Ability to collaborate effectively with cross-functional teams.Preferred QualificationsInternship, academic project, or research experience involving AI/ML development.Familiarity with TensorFlow, PyTorch, LangChain, or similar frameworks.Exposure to RPA tools, workflow automation, or AI agents.Basic knowledge of cloud platforms such as AWS, Azure, or Google Cloud.Experience with AI projects, automation solutions, or process improvement initiatives.We are an Equal Opportunity Employer and do not discriminate against any employee or applicant for employment because of race, color, sex, age, religion, sexual orientation, gender identity, national origin, status as a veteran, and basis of disability or any federal, state, or local protected class. Show more Show less",
     "location": "Remote",
     "posted": "",
@@ -10,38 +10,8 @@
     "_linkedin_work_type": "UNKNOWN",
     "remote_verdict": "unverified",
     "remote_note": "remote work confirmed, hiring geography not stated",
-    "score": 72,
-    "reason": "Damilola's advanced multi-agent systems, LLM orchestration, and production experience significantly exceed the entry-level requirements, making him overqualified; however, the role's focus on broad enterprise AI/ML and RPA (versus his specialized automation/agentic focus) and potential career regression may create misalignment despite technical excellence.",
-    "scraped_at": "2026-10-17T02:23:04.015977+00:00"
-  },
-  {
-    "title": "AI Engineer",
-    "company": "Ecolab",
-    "url": "https://www.linkedin.com/jobs/view/4471680633",
-    "description": "As an AI Engineer, you will design, implement, and deploy intelligent systems powered by LLMs, agent orchestration frameworks, and embedding-based retrieval solutions. This role blends hands-on engineering with solution thinking, focusing on scalable workflows and cloud-native delivery.Core Responsibilities Build applications leveraging LLM APIs for summarization, Q&A, and decision support Implement agentic workflows for multi-step task automation Develop embedding pipelines integrated with vector stores for RAG and search optimization Deploy AI components into cloud platforms using containerized CI/CD practices Monitor model behaviors in production and optimize for performance and cost-efficiencyRequired Skills 2–4 years of experience in AI/ML application development Strong programming skills in Python with LLM API integration and prompt workflows Hands-on experience with Databricks (Spark SQL, PySpark, Delta Lake) and Snowflake Familiarity with agent orchestration, embeddings, vector databases, and agentic tools Experience with cloud-native delivery (Azure), CI/CD, and API integration patternsOur Commitment to a Culture of Inclusion & BelongingEcolab is committed to fair and equal treatment of associates and applicants and furthering the principles of Equal Opportunity to Employment. We will recruit, hire, promote, transfer and provide opportunities for advancement based on individual qualifications and job performance in all matters affecting employment, compensation, benefits, working conditions, and opportunities for advancement. Ecolab will not discriminate against any associate or applicant for employment because of race, religion, color, creed, national origin,citizenship status, sex, sexual orientation, gender identity and expressions, genetic information, marital status, age, or disability. Show more Show less",
-    "location": "Remote",
-    "posted": "",
-    "source": "LinkedIn",
-    "_linkedin_work_type": "UNKNOWN",
-    "remote_verdict": "unverified",
-    "remote_note": "remote work confirmed, hiring geography not stated",
-    "score": 72,
-    "reason": "Strong match on LLM APIs, agent orchestration, and RAG expertise, but lacks required hands-on experience with Databricks, Snowflake, and cloud-native CI/CD practices that are core to the role. The independent contractor background demonstrates capability but not the enterprise-scale infrastructure experience Ecolab seeks.",
-    "scraped_at": "2026-10-17T02:23:04.015977+00:00"
-  },
-  {
-    "title": "Senior AI/ML Engineer (AWS Bedrock)",
-    "company": "Haparz",
-    "url": "https://www.linkedin.com/jobs/view/4479616638",
-    "description": "REMOTE OPTION IS AVAILABLENO FRESHER WILL BE PREFERREDWe are looking for Senior AI/ML Engineer (AWS Bedrock)as a Full Time for our IT Company.Location- Remote Experience- 6+ yearsBudget- As per company standard Notice Period- Immediate JoinerMandatory Skills: AWS, Amazon Bedrock, Document Al, OCR (Textract or equivalent), Structured Data Extraction, Agentic Intelligence (LLM Agents), RAG (Retrieval-Augmented Generation) Pipelines, Human-in-the-Loop (HITL) Systems, Prompt Engineering Show more Show less",
-    "location": "Remote",
-    "posted": "",
-    "source": "LinkedIn",
-    "_linkedin_work_type": "UNKNOWN",
-    "remote_verdict": "unverified",
-    "remote_note": "remote work confirmed, hiring geography not stated",
-    "score": 42,
-    "reason": "Strong technical skill alignment in AI/ML, RAG, agentic systems, and HITL, but significant experience gap (1.5 years vs 6+ years required) and missing mandatory AWS/Bedrock expertise are major concerns. Senior title expectation mismatches junior-to-mid level background.",
-    "scraped_at": "2026-10-17T02:23:04.015977+00:00"
+    "score": 28,
+    "reason": "Damilola's expertise significantly exceeds the entry-level (0-2 years) requirement with 1+ years of specialized AI automation and multi-agent systems experience, making him overqualified and likely to experience role misalignment. The position appears designed for junior developers focusing on foundational ML/AI rather than the production-grade LLM orchestration and agentic systems that define his professional profile.",
+    "scraped_at": "2026-10-17T08:11:04.113730+00:00"
   }
 ]
