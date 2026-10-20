@@ -7,17 +7,17 @@
   "wwr": {
     "count": 10,
     "status": "ok",
-    "seconds": 1.2
+    "seconds": 1.6
   },
   "remoteok": {
     "count": 9,
     "status": "ok",
-    "seconds": 0.6
+    "seconds": 0.7
   },
   "arbeitnow": {
     "count": 2,
     "status": "ok",
-    "seconds": 0.4
+    "seconds": 0.3
   },
   "jobicy": {
     "count": 11,
@@ -32,11 +32,11 @@
   "workingnomads": {
     "count": 7,
     "status": "ok",
-    "seconds": 0.3
+    "seconds": 0.4
   },
   "linkedin": {
-    "count": 18,
+    "count": 8,
     "status": "ok",
-    "seconds": 79.4
+    "seconds": 76.8
   }
 }
