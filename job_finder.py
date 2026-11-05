@@ -231,19 +231,22 @@ def fetch_arbeitnow() -> list[dict]:
             title = j.get("title", "")
             if not is_relevant(title):
                 continue
-            if not j.get("remote", False):
-                continue
             desc = clean_html(j.get("description", ""))
+            # On-site German roles are kept only when they offer sponsorship,
+            # since those are a relocation route rather than a location block.
+            sponsored = offers_sponsorship(desc)
+            if not j.get("remote", False) and not sponsored:
+                continue
             if not is_english(desc):
                 continue
-            if is_geo_restricted(desc):
+            if not sponsored and is_geo_restricted(desc):
                 continue
             jobs.append({
                 "title": title,
                 "company": j.get("company_name", ""),
                 "url": j.get("url", ""),
                 "description": desc,
-                "location": "Remote",
+                "location": "Remote" if j.get("remote") else (j.get("location") or "Germany"),
                 "posted": j.get("created_at", ""),
                 "source": "Arbeitnow",
             })
@@ -699,6 +702,125 @@ def fetch_linkedin() -> list[dict]:
     return confirmed_remote
 
 
+# ── Source: LinkedIn (visa sponsorship, on-site allowed) ──────────────────────
+
+# Countries with a workable sponsored-visa route from Nigeria (Nov 2026):
+# NL Highly Skilled Migrant, DE Blue Card, IE Critical Skills, UK Skilled
+# Worker, UAE employer visa.
+SPONSOR_LOCATIONS = ["Netherlands", "Germany", "Ireland", "United Kingdom",
+                     "United Arab Emirates"]
+SPONSOR_KEYWORDS  = ["AI Engineer visa sponsorship",
+                     "AI Automation Engineer relocation",
+                     "LLM Engineer visa sponsorship"]
+
+def fetch_linkedin_sponsored() -> list[dict]:
+    """
+    On-site or hybrid roles are fine here: the job only survives if its
+    description offers visa sponsorship or relocation (offers_sponsorship).
+    """
+    jobs, seen_urls = [], set()
+    for loc in SPONSOR_LOCATIONS:
+        per_loc = 0
+        for keyword in SPONSOR_KEYWORDS:
+            if per_loc >= 8:
+                break
+            try:
+                url = (
+                    f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search"
+                    f"?keywords={requests.utils.quote(keyword)}"
+                    f"&location={requests.utils.quote(loc)}&f_TPR=r86400&start=0"
+                )
+                r = requests.get(url, headers=HEADERS, timeout=15)
+                if r.status_code != 200:
+                    print(f"[LinkedIn-Sponsored] Status {r.status_code} for '{keyword}' in {loc}")
+                    time.sleep(3)
+                    continue
+                soup = BeautifulSoup(r.text, "lxml")
+                for card in soup.find_all("li"):
+                    title_el = card.find("h3", class_="base-search-card__title")
+                    company_el = card.find("h4", class_="base-search-card__subtitle")
+                    link_el = card.find("a", class_="base-card__full-link")
+                    if not title_el or not link_el:
+                        continue
+                    title = title_el.get_text(strip=True)
+                    if not is_relevant(title):
+                        continue
+                    clean_link = link_el.get("href", "").split("?")[0]
+                    id_match = re.search(r"-(\d{10,})$", clean_link)
+                    canonical = f"https://www.linkedin.com/jobs/view/{id_match.group(1)}" if id_match else clean_link
+                    if canonical in seen_urls or per_loc >= 8:
+                        continue
+                    seen_urls.add(canonical)
+                    per_loc += 1
+                    jobs.append({
+                        "title": title,
+                        "company": company_el.get_text(strip=True) if company_el else "",
+                        "url": canonical,
+                        "description": "",
+                        "location": loc,
+                        "posted": "",
+                        "source": "LinkedIn-Sponsored",
+                    })
+                time.sleep(1.5)
+            except Exception as e:
+                print(f"[LinkedIn-Sponsored] Error for '{keyword}' in {loc}: {e}")
+                time.sleep(3)
+
+    # Capped at 8 per country above so every country gets descriptions fetched
+    print(f"[LinkedIn-Sponsored] Fetching descriptions for {len(jobs)} jobs...")
+    kept = []
+    for j in jobs:
+        try:
+            r = requests.get(j["url"], headers=HEADERS, timeout=8)
+            if r.status_code != 200:
+                continue
+            soup = BeautifulSoup(r.text, "lxml")
+            desc_el = soup.find("div", class_="description__text") or \
+                      soup.find("div", class_="show-more-less-html__markup")
+            if not desc_el:
+                continue
+            j["description"] = clean_html(desc_el.get_text())
+            for a in soup.find_all("a", href=True):
+                href = a["href"]
+                if href.startswith("http") and "linkedin.com" not in href:
+                    tracking = a.get("data-tracking-control-name", "")
+                    if "apply" in " ".join(a.get("class", [])).lower() or "apply" in tracking.lower():
+                        j["apply_url"] = href
+                        break
+            if offers_sponsorship(j["description"]):
+                print(f"  [KEEP sponsored] {j['title']} at {j['company']} ({j['location']})")
+                kept.append(j)
+            else:
+                print(f"  [DROP no sponsorship stated] {j['title']} at {j['company']}")
+            time.sleep(1)
+        except Exception:
+            pass
+    print(f"[LinkedIn-Sponsored] {len(kept)} jobs offer sponsorship or relocation")
+    return kept
+
+
+# ── Visa sponsorship detection ────────────────────────────────────────────────
+
+SPONSORSHIP_SIGNALS = re.compile(
+    r"\b(visa sponsorship (is )?(available|provided|offered|possible)|"
+    r"(offer|offers|provide|provides|support|supports|including)\s+(full\s+)?(visa|relocation)|"
+    r"sponsor (your|a|the) (visa|work permit)|we (can|will|do) sponsor|"
+    r"relocation (package|support|assistance|bonus|budget)|"
+    r"visa (and|&) relocation|relocation (and|&) visa|help(ing)? you relocate|"
+    r"blue card|highly skilled migrant|kennismigrant|critical skills (employment )?permit)\b",
+    re.IGNORECASE,
+)
+NO_SPONSORSHIP = re.compile(
+    r"\b(no|not|unable to|cannot|can't|do not|don't|won't|will not|without)\b"
+    r".{0,25}\b(sponsor|sponsorship|relocation)",
+    re.IGNORECASE,
+)
+
+def offers_sponsorship(text: str) -> bool:
+    """True when the posting offers visa sponsorship or relocation and never refuses it."""
+    return bool(SPONSORSHIP_SIGNALS.search(text or "")) and not NO_SPONSORSHIP.search(text or "")
+
+
 # ── Remote / language filters ─────────────────────────────────────────────────
 
 HYBRID_ONSITE_PATTERNS = [
@@ -815,6 +937,13 @@ def is_relevant(title: str) -> bool:
 
 # ── Score with Claude ─────────────────────────────────────────────────────────
 
+SPONSORED_GEO_RULE = (
+    "SPONSORED ROLE: this posting offers visa sponsorship or relocation. Damilola "
+    "is willing to relocate, so do NOT penalise on-site, hybrid, a named country "
+    "or local timezone. Ignore the geography rule below and score on technical "
+    "fit and seniority only.\n"
+)
+
 def score_job(job: dict) -> dict:
     description = job["description"][:3000] if job["description"] else "No description available."
     prompt = f"""Evaluate this job for Damilola Akinbobola.
@@ -828,7 +957,7 @@ Company: {job['company']}
 Location: {job['location']}
 Description: {description}
 
-Score this job 0-100 based on technical skill match, role fit, remote compatibility, seniority match.
+{SPONSORED_GEO_RULE if job.get("remote_verdict") == "sponsored" else ""}Score this job 0-100 based on technical skill match, role fit, remote compatibility, seniority match.
 Return ONLY a JSON object, no markdown, no explanation outside the JSON:
 {{"score": 85, "reason": "Two sentence max."}}"""
 
@@ -911,7 +1040,11 @@ def send_digest(jobs: list[dict], health: dict | None = None):
         else:
             color = "#ef4444"
         verdict = j.get("remote_verdict", "unverified")
-        if verdict == "global":
+        if verdict == "sponsored":
+            badge = ('<span style="background:#dbeafe;color:#1e40af;padding:2px 8px;'
+                     'border-radius:4px;font-size:11px;font-weight:600;">'
+                     f'VISA SPONSORED &middot; {j.get("location","")}</span>')
+        elif verdict == "global":
             badge = ('<span style="background:#dcfce7;color:#166534;padding:2px 8px;'
                      'border-radius:4px;font-size:11px;font-weight:600;">GLOBAL REMOTE</span>')
         else:
@@ -1357,6 +1490,11 @@ def classify_remote(job: dict) -> tuple[str, str]:
     if _looks_non_english(desc):
         return "region_locked", "non-English description"
 
+    # 1b. Visa sponsorship / relocation offered. Location, hybrid and on-site
+    #     stop mattering because the employer will move the candidate there.
+    if offers_sponsorship(desc):
+        return "sponsored", f"visa sponsorship or relocation offered ({location[:30] or 'location n/a'})"
+
     # 2. Structured location field. The curated boards (Himalayas, RemoteOK,
     #    WorkingNomads) return a real value here such as "Portugal", "South
     #    Korea" or "Europe, North America" rather than a blanket "Remote".
@@ -1471,6 +1609,10 @@ def is_eligible(job: dict) -> bool:
     description = (job.get("description", "") + " " + job.get("location", "")).lower()
     title = job.get("title", "")
 
+    # Sponsored roles are expected to name a country; that is the point.
+    if job.get("remote_verdict") == "sponsored":
+        return True
+
     # Check explicit exclusions
     for pattern in EXCLUDE_PATTERNS:
         if re.search(pattern, description, re.IGNORECASE):
@@ -1533,7 +1675,7 @@ def main():
     for fetcher in [
         fetch_remotive, fetch_wwr, fetch_remoteok, fetch_arbeitnow,
         fetch_jobicy, fetch_himalayas, fetch_workingnomads,
-        fetch_linkedin,
+        fetch_linkedin, fetch_linkedin_sponsored,
     ]:
         label = fetcher.__name__.replace("fetch_", "")
         t0 = time.time()
