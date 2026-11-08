@@ -20,6 +20,11 @@ load_dotenv()
 # ── Config ─────────────────────────────────────────────────────────────────────
 
 ANTHROPIC_API_KEY  = os.getenv("ANTHROPIC_API_KEY")
+# Which LLM scores jobs. "openai" while the Anthropic credit is empty (Nov 2026);
+# set SCORER_PROVIDER back to "anthropic" in the workflow once it is topped up.
+SCORER_PROVIDER    = os.getenv("SCORER_PROVIDER", "anthropic").lower()
+OPENAI_API_KEY     = os.getenv("OPENAI_API_KEY")
+OPENAI_MODEL       = os.getenv("OPENAI_MODEL", "gpt-5.4-mini")
 GMAIL_USER         = os.getenv("GMAIL_USER")
 GMAIL_APP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD")
 RECIPIENT_EMAIL    = os.getenv("RECIPIENT_EMAIL", "kelvinjr995@gmail.com")
@@ -101,7 +106,32 @@ HEADERS = {
     "Accept-Language": "en-US,en;q=0.5",
 }
 
-client = Anthropic(api_key=ANTHROPIC_API_KEY)
+if SCORER_PROVIDER == "openai":
+    from openai import OpenAI
+    client = OpenAI(api_key=OPENAI_API_KEY)
+else:
+    client = Anthropic(api_key=ANTHROPIC_API_KEY)
+
+
+def complete_json(prompt: str) -> str:
+    """Send the scoring prompt to the configured provider and return raw JSON-ish text."""
+    if SCORER_PROVIDER == "openai":
+        # GPT-5 models reject a custom temperature, so it is left at the default.
+        response = client.chat.completions.create(
+            model=OPENAI_MODEL,
+            messages=[{"role": "user", "content": prompt}],
+            response_format={"type": "json_object"},
+        )
+        return response.choices[0].message.content or ""
+    response = client.messages.create(
+        model="claude-haiku-4-5-20251001",
+        max_tokens=200,
+        messages=[
+            {"role": "user", "content": prompt},
+            {"role": "assistant", "content": "{"},
+        ]
+    )
+    return "{" + response.content[0].text.strip()
 
 
 # ── Seen Jobs (dedup) ──────────────────────────────────────────────────────────
@@ -962,15 +992,7 @@ Return ONLY a JSON object, no markdown, no explanation outside the JSON:
 {{"score": 85, "reason": "Two sentence max."}}"""
 
     try:
-        response = client.messages.create(
-            model="claude-haiku-4-5-20251001",
-            max_tokens=200,
-            messages=[
-                {"role": "user", "content": prompt},
-                {"role": "assistant", "content": "{"},
-            ]
-        )
-        text = "{" + response.content[0].text.strip()
+        text = complete_json(prompt)
         # Strip markdown code fences if present
         text = re.sub(r"```json|```", "", text).strip()
         # Extract first JSON object
