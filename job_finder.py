@@ -144,7 +144,7 @@ def load_seen() -> set:
         # Support both old format (list) and new format (dict with timestamps)
         if isinstance(data, list):
             return set(data)
-        cutoff = (datetime.now(timezone.utc) - timedelta(days=7)).isoformat()
+        cutoff = (datetime.now(timezone.utc) - timedelta(days=SEEN_DAYS)).isoformat()
         return set(k for k, v in data.items() if v > cutoff)
     except Exception:
         return set()
@@ -152,15 +152,26 @@ def load_seen() -> set:
 def save_seen(seen: set, seen_ts: dict):
     now = datetime.now(timezone.utc).isoformat()
     # Keep only entries still within 7 days
-    cutoff = (datetime.now(timezone.utc) - timedelta(days=7)).isoformat()
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=SEEN_DAYS)).isoformat()
     merged = {k: v for k, v in seen_ts.items() if v > cutoff}
     for jid in seen:
         if jid not in merged:
             merged[jid] = now
     SEEN_FILE.write_text(json.dumps(merged, indent=2))
 
+# How long a shown job stays suppressed. 7 days let still-open roles reappear
+# every week, so it was raised to 60 (Nov 2026).
+SEEN_DAYS = 60
+
+
 def job_id(url: str) -> str:
     return hashlib.md5(url.encode()).hexdigest()
+
+
+def role_key(job: dict) -> str:
+    """Same role reposted under a new URL (recruiters do this weekly) gets the same key."""
+    norm = lambda s: re.sub(r"[^a-z0-9]+", " ", (s or "").lower()).strip()
+    return "role:" + hashlib.md5(f"{norm(job.get('company'))}|{norm(job.get('title'))}".encode()).hexdigest()
 
 
 # ── Source: Remotive ──────────────────────────────────────────────────────────
@@ -1741,10 +1752,11 @@ def main():
     # Deduplicate
     new_jobs = []
     for j in eligible_jobs:
-        jid = job_id(j["url"])
-        if jid not in seen and j["url"]:
+        jid, rkey = job_id(j["url"]), role_key(j)
+        if j["url"] and jid not in seen and rkey not in seen:
             new_jobs.append(j)
             seen.add(jid)
+            seen.add(rkey)
 
     print(f"New (unseen) jobs: {len(new_jobs)}")
 
