@@ -5,43 +5,43 @@
     "seconds": 0.2
   },
   "wwr": {
-    "count": 13,
+    "count": 11,
     "status": "ok",
-    "seconds": 2.8
+    "seconds": 1.6
   },
   "remoteok": {
     "count": 14,
     "status": "ok",
-    "seconds": 0.6
-  },
-  "arbeitnow": {
-    "count": 1,
-    "status": "ok",
-    "seconds": 0.3
-  },
-  "jobicy": {
-    "count": 9,
-    "status": "ok",
-    "seconds": 6.1
-  },
-  "himalayas": {
-    "count": 5,
-    "status": "ok",
-    "seconds": 0.3
-  },
-  "workingnomads": {
-    "count": 8,
-    "status": "ok",
     "seconds": 0.5
   },
-  "linkedin": {
-    "count": 15,
+  "arbeitnow": {
+    "count": 0,
+    "status": "empty",
+    "seconds": 0.2
+  },
+  "jobicy": {
+    "count": 10,
     "status": "ok",
-    "seconds": 80.4
+    "seconds": 5.3
+  },
+  "himalayas": {
+    "count": 0,
+    "status": "empty",
+    "seconds": 0.2
+  },
+  "workingnomads": {
+    "count": 7,
+    "status": "ok",
+    "seconds": 0.2
+  },
+  "linkedin": {
+    "count": 13,
+    "status": "ok",
+    "seconds": 80.0
   },
   "linkedin_sponsored": {
-    "count": 6,
+    "count": 3,
     "status": "ok",
-    "seconds": 75.9
+    "seconds": 74.6
   }
 }
