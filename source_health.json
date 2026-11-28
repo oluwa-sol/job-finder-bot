@@ -7,10 +7,10 @@
   "wwr": {
     "count": 24,
     "status": "ok",
-    "seconds": 1.8
+    "seconds": 3.8
   },
   "remoteok": {
-    "count": 2,
+    "count": 1,
     "status": "ok",
     "seconds": 0.7
   },
@@ -25,9 +25,9 @@
     "seconds": 5.0
   },
   "himalayas": {
-    "count": 5,
+    "count": 7,
     "status": "ok",
-    "seconds": 0.3
+    "seconds": 0.5
   },
   "workingnomads": {
     "count": 6,
@@ -35,13 +35,13 @@
     "seconds": 0.3
   },
   "linkedin": {
-    "count": 6,
+    "count": 20,
     "status": "ok",
-    "seconds": 72.9
+    "seconds": 75.4
   },
   "linkedin_sponsored": {
-    "count": 4,
+    "count": 3,
     "status": "ok",
-    "seconds": 55.1
+    "seconds": 64.1
   }
 }
